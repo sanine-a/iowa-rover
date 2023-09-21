@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "dna-puzzle-electronics-rescue")(type "Legacy")(uri "${KIPRJMOD}/dna-puzzle-electronics-rescue.lib")(options "")(descr ""))
+)

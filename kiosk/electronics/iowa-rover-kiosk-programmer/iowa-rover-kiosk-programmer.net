@@ -1,0 +1,723 @@
+(export 
+  (version D) 
+  (design 
+    (source /home/kate/work/scimusmn/tsck-dna-puzzle/dna-puzzle-electronics/programming-board.sch) 
+    (date "Fri 17 Dec 2021 01:45:03 AM CST") 
+    (tool "Eeschema 5.1.5+dfsg1-2build2") 
+    (sheet 
+      (number 1) 
+      (name /) 
+      (tstamps /) 
+      (title_block 
+        (title) 
+        (company) 
+        (rev) 
+        (date) 
+        (source iowa-rover-kiosk-programmer.sch) 
+        (comment 
+          (number 1) 
+          (value "")) 
+        (comment 
+          (number 2) 
+          (value "")) 
+        (comment 
+          (number 3) 
+          (value "")) 
+        (comment 
+          (number 4) 
+          (value ""))))) 
+  (components 
+    (comp 
+      (ref SW1) 
+      (value SW_Push) 
+      (footprint Button_Switch_THT:SW_PUSH_6mm_H4.3mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Switch) 
+        (part SW_Push) 
+        (description "Push button switch, generic, two pins")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BC2EEA)) 
+    (comp 
+      (ref R5) 
+      (value 10k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BC388F)) 
+    (comp 
+      (ref J1) 
+      (value Conn_02x06_Odd_Even) 
+      (footprint Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Vertical) 
+      (datasheet ~) 
+      (libsource 
+        (lib Connector_Generic) 
+        (part Conn_02x06_Odd_Even) 
+        (description "Generic connector, double row, 02x06, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BC59D5)) 
+    (comp 
+      (ref SW2) 
+      (value SW_Push) 
+      (footprint Button_Switch_THT:SW_PUSH_6mm_H4.3mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Switch) 
+        (part SW_Push) 
+        (description "Push button switch, generic, two pins")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BCA54F)) 
+    (comp 
+      (ref SW3) 
+      (value SW_Push) 
+      (footprint Button_Switch_THT:SW_PUSH_6mm_H4.3mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Switch) 
+        (part SW_Push) 
+        (description "Push button switch, generic, two pins")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BCC311)) 
+    (comp 
+      (ref SW4) 
+      (value SW_Push) 
+      (footprint Button_Switch_THT:SW_PUSH_6mm_H4.3mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Switch) 
+        (part SW_Push) 
+        (description "Push button switch, generic, two pins")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BCD4D3)) 
+    (comp 
+      (ref R8) 
+      (value 10k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BCD4D9)) 
+    (comp 
+      (ref SW5) 
+      (value SW_Push) 
+      (footprint Button_Switch_THT:SW_PUSH_6mm_H4.3mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Switch) 
+        (part SW_Push) 
+        (description "Push button switch, generic, two pins")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BFC4B7)) 
+    (comp 
+      (ref R9) 
+      (value 10k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BFC4BD)) 
+    (comp 
+      (ref R6) 
+      (value 10k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C063D4)) 
+    (comp 
+      (ref R7) 
+      (value 10k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C08807)) 
+    (comp 
+      (ref D1) 
+      (value LED) 
+      (footprint LED_THT:LED_D3.0mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part LED) 
+        (description "Light emitting diode")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C0DCA4)) 
+    (comp 
+      (ref R1) 
+      (value 1k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C10BC4)) 
+    (comp 
+      (ref D2) 
+      (value LED) 
+      (footprint LED_THT:LED_D3.0mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part LED) 
+        (description "Light emitting diode")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C20355)) 
+    (comp 
+      (ref R2) 
+      (value 1k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C2035B)) 
+    (comp 
+      (ref D3) 
+      (value LED) 
+      (footprint LED_THT:LED_D3.0mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part LED) 
+        (description "Light emitting diode")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C20D14)) 
+    (comp 
+      (ref R3) 
+      (value 1k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C20D1A)) 
+    (comp 
+      (ref D4) 
+      (value LED) 
+      (footprint LED_THT:LED_D3.0mm) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part LED) 
+        (description "Light emitting diode")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C229F9)) 
+    (comp 
+      (ref R4) 
+      (value 1k) 
+      (footprint Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal) 
+      (datasheet ~) 
+      (libsource 
+        (lib Device) 
+        (part R) 
+        (description Resistor)) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61C229FF)) 
+    (comp 
+      (ref U1) 
+      (value ID12-LA) 
+      (footprint SMM:ID-12LA) 
+      (libsource 
+        (lib SMM) 
+        (part ID12-LA) 
+        (description "")) 
+      (sheetpath 
+        (names /) 
+        (tstamps /)) 
+      (tstamp 61BFD80E))) 
+  (libparts 
+    (libpart 
+      (lib Connector_Generic) 
+      (part Conn_02x06_Odd_Even) 
+      (description "Generic connector, double row, 02x06, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)") 
+      (docs ~) 
+      (footprints 
+        (fp Connector*:*_2x??_*)) 
+      (fields 
+        (field 
+          (name Reference) J) 
+        (field 
+          (name Value) Conn_02x06_Odd_Even)) 
+      (pins 
+        (pin 
+          (num 1) 
+          (name Pin_1) 
+          (type passive)) 
+        (pin 
+          (num 2) 
+          (name Pin_2) 
+          (type passive)) 
+        (pin 
+          (num 3) 
+          (name Pin_3) 
+          (type passive)) 
+        (pin 
+          (num 4) 
+          (name Pin_4) 
+          (type passive)) 
+        (pin 
+          (num 5) 
+          (name Pin_5) 
+          (type passive)) 
+        (pin 
+          (num 6) 
+          (name Pin_6) 
+          (type passive)) 
+        (pin 
+          (num 7) 
+          (name Pin_7) 
+          (type passive)) 
+        (pin 
+          (num 8) 
+          (name Pin_8) 
+          (type passive)) 
+        (pin 
+          (num 9) 
+          (name Pin_9) 
+          (type passive)) 
+        (pin 
+          (num 10) 
+          (name Pin_10) 
+          (type passive)) 
+        (pin 
+          (num 11) 
+          (name Pin_11) 
+          (type passive)) 
+        (pin 
+          (num 12) 
+          (name Pin_12) 
+          (type passive)))) 
+    (libpart 
+      (lib Device) 
+      (part LED) 
+      (description "Light emitting diode") 
+      (docs ~) 
+      (footprints 
+        (fp LED*) 
+        (fp LED_SMD:*) 
+        (fp LED_THT:*)) 
+      (fields 
+        (field 
+          (name Reference) D) 
+        (field 
+          (name Value) LED)) 
+      (pins 
+        (pin 
+          (num 1) 
+          (name K) 
+          (type passive)) 
+        (pin 
+          (num 2) 
+          (name A) 
+          (type passive)))) 
+    (libpart 
+      (lib Device) 
+      (part R) 
+      (description Resistor) 
+      (docs ~) 
+      (footprints 
+        (fp R_*)) 
+      (fields 
+        (field 
+          (name Reference) R) 
+        (field 
+          (name Value) R)) 
+      (pins 
+        (pin 
+          (num 1) 
+          (name ~) 
+          (type passive)) 
+        (pin 
+          (num 2) 
+          (name ~) 
+          (type passive)))) 
+    (libpart 
+      (lib SMM) 
+      (part ID12-LA) 
+      (fields 
+        (field 
+          (name Reference) U) 
+        (field 
+          (name Value) ID12-LA)) 
+      (pins 
+        (pin 
+          (num 1) 
+          (name GND) 
+          (type power_in)) 
+        (pin 
+          (num 2) 
+          (name RES) 
+          (type input)) 
+        (pin 
+          (num 3) 
+          (name ~) 
+          (type NotConnected)) 
+        (pin 
+          (num 4) 
+          (name ~) 
+          (type NotConnected)) 
+        (pin 
+          (num 5) 
+          (name CP) 
+          (type input)) 
+        (pin 
+          (num 6) 
+          (name TIR) 
+          (type output)) 
+        (pin 
+          (num 7) 
+          (name FMT) 
+          (type input)) 
+        (pin 
+          (num 8) 
+          (name D1) 
+          (type output)) 
+        (pin 
+          (num 9) 
+          (name D0) 
+          (type output)) 
+        (pin 
+          (num 10) 
+          (name READ) 
+          (type output)) 
+        (pin 
+          (num 11) 
+          (name PWR) 
+          (type power_in)))) 
+    (libpart 
+      (lib Switch) 
+      (part SW_Push) 
+      (description "Push button switch, generic, two pins") 
+      (docs ~) 
+      (fields 
+        (field 
+          (name Reference) SW) 
+        (field 
+          (name Value) SW_Push)) 
+      (pins 
+        (pin 
+          (num 1) 
+          (name 1) 
+          (type passive)) 
+        (pin 
+          (num 2) 
+          (name 2) 
+          (type passive))))) 
+  (libraries 
+    (library 
+      (logical Connector_Generic) 
+      (uri /usr/share/kicad/library/Connector_Generic.lib)) 
+    (library 
+      (logical Device) 
+      (uri /usr/share/kicad/library/Device.lib)) 
+    (library 
+      (logical SMM) 
+      (uri /home/kate/work/scimusmn/electronics/kicad/SMM.lib)) 
+    (library 
+      (logical Switch) 
+      (uri /usr/share/kicad/library/Switch.lib))) 
+  (nets 
+    (net 
+      (code 1) 
+      (name /LED2) 
+      (node 
+        (ref J1) 
+        (pin 7)) 
+      (node 
+        (ref D2) 
+        (pin 2))) 
+    (net 
+      (code 2) 
+      (name GND) 
+      (node 
+        (ref SW5) 
+        (pin 2)) 
+      (node 
+        (ref U1) 
+        (pin 7)) 
+      (node 
+        (ref U1) 
+        (pin 1)) 
+      (node 
+        (ref R3) 
+        (pin 1)) 
+      (node 
+        (ref J1) 
+        (pin 1)) 
+      (node 
+        (ref SW2) 
+        (pin 2)) 
+      (node 
+        (ref SW1) 
+        (pin 2)) 
+      (node 
+        (ref SW3) 
+        (pin 2)) 
+      (node 
+        (ref SW4) 
+        (pin 2)) 
+      (node 
+        (ref R1) 
+        (pin 1)) 
+      (node 
+        (ref R4) 
+        (pin 1)) 
+      (node 
+        (ref R2) 
+        (pin 1))) 
+    (net 
+      (code 3) 
+      (name "Net-(D4-Pad1)") 
+      (node 
+        (ref D4) 
+        (pin 1)) 
+      (node 
+        (ref R4) 
+        (pin 2))) 
+    (net 
+      (code 4) 
+      (name /LED1) 
+      (node 
+        (ref J1) 
+        (pin 5)) 
+      (node 
+        (ref D1) 
+        (pin 2))) 
+    (net 
+      (code 5) 
+      (name "Net-(D3-Pad1)") 
+      (node 
+        (ref R3) 
+        (pin 2)) 
+      (node 
+        (ref D3) 
+        (pin 1))) 
+    (net 
+      (code 6) 
+      (name /LED3) 
+      (node 
+        (ref J1) 
+        (pin 9)) 
+      (node 
+        (ref D3) 
+        (pin 2))) 
+    (net 
+      (code 7) 
+      (name /LED4) 
+      (node 
+        (ref J1) 
+        (pin 11)) 
+      (node 
+        (ref D4) 
+        (pin 2))) 
+    (net 
+      (code 8) 
+      (name "Net-(D1-Pad1)") 
+      (node 
+        (ref D1) 
+        (pin 1)) 
+      (node 
+        (ref R1) 
+        (pin 2))) 
+    (net 
+      (code 9) 
+      (name "Net-(D2-Pad1)") 
+      (node 
+        (ref R2) 
+        (pin 2)) 
+      (node 
+        (ref D2) 
+        (pin 1))) 
+    (net 
+      (code 10) 
+      (name "Net-(U1-Pad10)") 
+      (node 
+        (ref U1) 
+        (pin 10))) 
+    (net 
+      (code 11) 
+      (name "Net-(J1-Pad12)") 
+      (node 
+        (ref J1) 
+        (pin 12)) 
+      (node 
+        (ref U1) 
+        (pin 9))) 
+    (net 
+      (code 12) 
+      (name "Net-(U1-Pad8)") 
+      (node 
+        (ref U1) 
+        (pin 8))) 
+    (net 
+      (code 13) 
+      (name +5V) 
+      (node 
+        (ref R8) 
+        (pin 1)) 
+      (node 
+        (ref R5) 
+        (pin 1)) 
+      (node 
+        (ref R9) 
+        (pin 1)) 
+      (node 
+        (ref R6) 
+        (pin 1)) 
+      (node 
+        (ref J1) 
+        (pin 3)) 
+      (node 
+        (ref U1) 
+        (pin 11)) 
+      (node 
+        (ref U1) 
+        (pin 2)) 
+      (node 
+        (ref R7) 
+        (pin 1))) 
+    (net 
+      (code 14) 
+      (name "Net-(U1-Pad3)") 
+      (node 
+        (ref U1) 
+        (pin 3))) 
+    (net 
+      (code 15) 
+      (name "Net-(U1-Pad4)") 
+      (node 
+        (ref U1) 
+        (pin 4))) 
+    (net 
+      (code 16) 
+      (name "Net-(U1-Pad5)") 
+      (node 
+        (ref U1) 
+        (pin 5))) 
+    (net 
+      (code 17) 
+      (name "Net-(U1-Pad6)") 
+      (node 
+        (ref U1) 
+        (pin 6))) 
+    (net 
+      (code 19) 
+      (name /B4) 
+      (node 
+        (ref SW4) 
+        (pin 1)) 
+      (node 
+        (ref J1) 
+        (pin 8)) 
+      (node 
+        (ref R8) 
+        (pin 2))) 
+    (net 
+      (code 20) 
+      (name /B3) 
+      (node 
+        (ref J1) 
+        (pin 6)) 
+      (node 
+        (ref R7) 
+        (pin 2)) 
+      (node 
+        (ref SW3) 
+        (pin 1))) 
+    (net 
+      (code 21) 
+      (name /B5) 
+      (node 
+        (ref R9) 
+        (pin 2)) 
+      (node 
+        (ref J1) 
+        (pin 10)) 
+      (node 
+        (ref SW5) 
+        (pin 1))) 
+    (net 
+      (code 22) 
+      (name /B1) 
+      (node 
+        (ref SW1) 
+        (pin 1)) 
+      (node 
+        (ref R5) 
+        (pin 2)) 
+      (node 
+        (ref J1) 
+        (pin 2))) 
+    (net 
+      (code 23) 
+      (name /B2) 
+      (node 
+        (ref R6) 
+        (pin 2)) 
+      (node 
+        (ref SW2) 
+        (pin 1)) 
+      (node 
+        (ref J1) 
+        (pin 4)))))
