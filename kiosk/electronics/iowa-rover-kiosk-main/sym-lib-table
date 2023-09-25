@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "iowa-rover")(type "KiCad")(uri "${KIPRJMOD}/iowa-rover.kicad_sym")(options "")(descr ""))
+)

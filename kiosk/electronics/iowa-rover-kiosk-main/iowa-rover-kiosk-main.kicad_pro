@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.0,
-          "height": 1.0,
-          "width": 0.7
+          "drill": 0.762,
+          "height": 1.524,
+          "width": 1.524
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -45,8 +45,7 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "45_degree_only": false,
-          "min_clearance": 0.508
+          "min_clearance": 0.5
         }
       },
       "diff_pair_dimensions": [
@@ -73,7 +72,7 @@
         "duplicate_footprints": "warning",
         "extra_footprint": "warning",
         "footprint": "error",
-        "footprint_type_mismatch": "error",
+        "footprint_type_mismatch": "ignore",
         "hole_clearance": "error",
         "hole_near_hole": "error",
         "invalid_outline": "error",
@@ -89,7 +88,7 @@
         "missing_footprint": "warning",
         "net_conflict": "warning",
         "npth_inside_courtyard": "ignore",
-        "padstack": "error",
+        "padstack": "warning",
         "pth_inside_courtyard": "ignore",
         "shorting_items": "error",
         "silk_edge_clearance": "warning",
@@ -111,8 +110,6 @@
         "zones_intersect": "error"
       },
       "rules": {
-        "allow_blind_buried_vias": false,
-        "allow_microvias": false,
         "max_error": 0.005,
         "min_clearance": 0.0,
         "min_connection": 0.0,
@@ -126,9 +123,9 @@
         "min_text_height": 0.7999999999999999,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.19999999999999998,
-        "min_via_annular_width": 0.049999999999999996,
-        "min_via_diameter": 0.39999999999999997,
+        "min_track_width": 0.0,
+        "min_via_annular_width": 0.09999999999999999,
+        "min_via_diameter": 0.5,
         "solder_mask_clearance": 0.0,
         "solder_mask_min_width": 0.0,
         "solder_mask_to_copper_clearance": 0.0,
@@ -176,8 +173,7 @@
       ],
       "track_widths": [
         0.0,
-        0.2,
-        0.5
+        0.25
       ],
       "via_dimensions": [
         {
@@ -185,8 +181,7 @@
           "drill": 0.0
         }
       ],
-      "zones_allow_external_fillets": false,
-      "zones_use_no_outline": true
+      "zones_allow_external_fillets": false
     },
     "layer_presets": [],
     "viewports": []
@@ -396,7 +391,7 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "error",
+      "pin_to_pin": "warning",
       "power_pin_not_driven": "error",
       "similar_labels": "warning",
       "simulation_model_issue": "ignore",
@@ -411,7 +406,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "iowa-rover.kicad_pro",
+    "filename": "iowa-rover-kiosk-main.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -434,7 +429,7 @@
         "wire_width": 6
       },
       {
-        "bus_width": 12,
+        "bus_width": 31,
         "clearance": 0.2,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
@@ -442,16 +437,16 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "Motor",
+        "name": "12V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.5,
+        "track_width": 0.7,
         "via_diameter": 0.8,
         "via_drill": 0.4,
-        "wire_width": 6
+        "wire_width": 20
       },
       {
-        "bus_width": 16,
+        "bus_width": 24,
         "clearance": 0.2,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
@@ -459,13 +454,13 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "Power",
+        "name": "5V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.38,
+        "track_width": 2.0,
         "via_diameter": 0.8,
         "via_drill": 0.4,
-        "wire_width": 8
+        "wire_width": 12
       }
     ],
     "meta": {
@@ -475,28 +470,16 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "Power",
-        "pattern": "+5V"
-      },
-      {
-        "netclass": "Power",
+        "netclass": "5V",
         "pattern": "GND"
       },
       {
-        "netclass": "Motor",
-        "pattern": "/MA1"
+        "netclass": "12V",
+        "pattern": "+12V"
       },
       {
-        "netclass": "Motor",
-        "pattern": "/MA2"
-      },
-      {
-        "netclass": "Motor",
-        "pattern": "/MB1"
-      },
-      {
-        "netclass": "Motor",
-        "pattern": "/MB2"
+        "netclass": "5V",
+        "pattern": "+5V"
       }
     ]
   },
@@ -504,7 +487,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "iowa-rover.net",
+      "netlist": "",
       "specctra_dsn": "",
       "step": "",
       "vrml": ""
@@ -534,19 +517,9 @@
     "meta": {
       "version": 1
     },
-    "net_format_name": "KiCad",
-    "ngspice": {
-      "fix_include_paths": true,
-      "fix_passive_vals": false,
-      "meta": {
-        "version": 0
-      },
-      "model_mode": 0,
-      "workbook_filename": ""
-    },
+    "net_format_name": "",
     "page_layout_descr_file": "",
     "plot_directory": "",
-    "spice_adjust_passive_values": false,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,
@@ -557,7 +530,7 @@
   },
   "sheets": [
     [
-      "41c9c3b8-2883-4fdc-b499-17634b4fcf10",
+      "b9bfe41c-60d6-4511-ab7a-f42b864c94d7",
       ""
     ]
   ],
