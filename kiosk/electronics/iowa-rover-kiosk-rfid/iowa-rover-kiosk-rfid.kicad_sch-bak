@@ -451,7 +451,6 @@
   (no_connect (at 115.57 114.3) (uuid c553ac56-4fa4-4f1c-93df-878afab75327))
   (no_connect (at 115.57 86.36) (uuid c7999285-af63-427f-8d67-e487e745942c))
   (no_connect (at 175.895 106.045) (uuid ca1d3663-2427-4d49-8f18-5de498cf0e88))
-  (no_connect (at 55.88 102.87) (uuid deca80d0-e8c8-4fe0-ba05-9ccc786e7f68))
 
   (bus_entry (at 127 60.96) (size -2.54 2.54)
     (stroke (width 0) (type default))
