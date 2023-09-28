@@ -860,6 +860,31 @@
     (uuid eeeae9e1-cbd2-4e86-8e6d-c65d9370f522)
   )
 
+  (symbol (lib_id "power:+5V") (at 46.99 97.79 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 036f79fc-afd8-4de1-a5a2-e9237e9d69d1)
+    (property "Reference" "#PWR029" (at 46.99 93.98 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 46.99 102.87 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 46.99 97.79 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 46.99 97.79 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 7b349410-4e91-4b3b-9be5-3b9155d5c142))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR029") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "power:+5V") (at 246.38 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0437a0a2-2ea5-4c61-bcf7-2a83ffb52d83)
@@ -936,31 +961,6 @@
     )
   )
 
-  (symbol (lib_id "power:+12V") (at 46.99 90.17 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 0ad097d8-34b3-49df-adf5-3e889d5315dd)
-    (property "Reference" "#PWR027" (at 46.99 93.98 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 45.72 85.09 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 46.99 90.17 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 46.99 90.17 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid de5cf2f8-da3a-431a-a108-78cdd867f6b1))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR027") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "Device:Lamp") (at 64.77 100.33 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0b476bd2-ca3b-45f4-b3f2-bacb64137c8c)
@@ -982,6 +982,31 @@
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
           (reference "LA7") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+5V") (at 46.99 90.17 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 0e5b7a07-ee16-4710-9859-0abc1eb44674)
+    (property "Reference" "#PWR025" (at 46.99 93.98 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 46.99 85.09 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 46.99 90.17 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 46.99 90.17 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid d345e98e-4b66-4ab8-b6db-ea0202cd99d0))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR025") (unit 1)
         )
       )
     )
@@ -1064,31 +1089,6 @@
     )
   )
 
-  (symbol (lib_id "power:+12V") (at 26.67 92.71 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 23398fca-a51a-473b-b35e-52e953ec8b44)
-    (property "Reference" "#PWR026" (at 26.67 96.52 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 25.4 87.63 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 26.67 92.71 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 26.67 92.71 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 75e00ed8-ad67-4c09-9fd2-00865849ee28))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR026") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "Device:R") (at 213.36 62.23 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2b1a4c61-8dd6-4a92-9fff-85685299b4f0)
@@ -1115,13 +1115,13 @@
     )
   )
 
-  (symbol (lib_id "power:+12V") (at 72.39 102.87 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 333beae6-2ce4-4de2-bb1f-1739499ee235)
-    (property "Reference" "#PWR031" (at 72.39 99.06 0)
+  (symbol (lib_id "power:+5V") (at 72.39 102.87 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 35484988-7668-4286-a55f-9909fc0f4270)
+    (property "Reference" "#PWR027" (at 72.39 99.06 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "+12V" (at 71.12 107.95 0)
+    (property "Value" "+5V" (at 72.39 107.95 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "" (at 72.39 102.87 0)
@@ -1130,11 +1130,11 @@
     (property "Datasheet" "" (at 72.39 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid aaaf9395-dd4a-4855-bb3e-2b471f065955))
+    (pin "1" (uuid 8b7f88ef-57ff-4305-85d5-3d3d800403c5))
     (instances
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR031") (unit 1)
+          (reference "#PWR027") (unit 1)
         )
       )
     )
@@ -1243,31 +1243,6 @@
     )
   )
 
-  (symbol (lib_id "power:+12V") (at 72.39 85.09 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 56168e95-f3cb-4f47-99d6-d0c27e260e05)
-    (property "Reference" "#PWR024" (at 72.39 88.9 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 71.12 80.01 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 72.39 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 72.39 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid c4eeeed3-1fd6-4d9c-a6e1-8ba586e08841))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR024") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "power:+5V") (at 194.31 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5c767eb4-3afb-4606-be13-e46ae152e931)
@@ -1293,6 +1268,31 @@
     )
   )
 
+  (symbol (lib_id "power:+5V") (at 59.69 100.33 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 65692b42-9fd7-446b-af78-60b9e92754a5)
+    (property "Reference" "#PWR028" (at 59.69 96.52 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 59.69 105.41 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 59.69 100.33 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 59.69 100.33 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 94321283-bbe6-456c-894f-6c9fe1580b5f))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR028") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "power:+5V") (at 229.87 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 6708e623-57ad-4583-a362-f8abe53a211e)
@@ -1313,31 +1313,6 @@
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
           (reference "#PWR012") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+12V") (at 34.29 95.25 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 6f3e6845-b2fd-47ee-9de1-77f38358a172)
-    (property "Reference" "#PWR028" (at 34.29 91.44 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 33.02 100.33 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 34.29 95.25 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 34.29 95.25 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 601f6c74-50ef-4219-9e8f-b353ab324b99))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR028") (unit 1)
         )
       )
     )
@@ -1519,31 +1494,6 @@
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
           (reference "LA3") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+12V") (at 46.99 97.79 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 9c14e949-6e03-4d3d-822a-72c570af7ab5)
-    (property "Reference" "#PWR029" (at 46.99 93.98 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 45.72 102.87 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 46.99 97.79 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 46.99 97.79 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 079d6dcb-3229-4b46-a87e-6950f9271da8))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR029") (unit 1)
         )
       )
     )
@@ -1773,6 +1723,31 @@
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
           (reference "#PWR021") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+5V") (at 59.69 87.63 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid aa183732-c4bd-429b-a2b7-db104311d1a6)
+    (property "Reference" "#PWR024" (at 59.69 91.44 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 59.69 82.55 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 59.69 87.63 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 59.69 87.63 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 994362ba-a3ed-4b5c-a1d1-a762c38a993b))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR024") (unit 1)
         )
       )
     )
@@ -2025,6 +2000,31 @@
     )
   )
 
+  (symbol (lib_id "power:+5V") (at 34.29 95.25 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid c4444df6-a6ad-4c1d-a363-62a16e70636f)
+    (property "Reference" "#PWR030" (at 34.29 91.44 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 34.29 100.33 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 34.29 95.25 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 34.29 95.25 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 352ac080-231b-423b-a5e2-3c890747ef7c))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR030") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Device:Lamp") (at 77.47 102.87 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c4ded398-2b81-4949-8832-eb33d89907f6)
@@ -2071,31 +2071,6 @@
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
           (reference "#PWR019") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+12V") (at 59.69 87.63 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid ced44255-ec3e-4c72-ba40-b77c8d441258)
-    (property "Reference" "#PWR025" (at 59.69 91.44 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 58.42 82.55 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 59.69 87.63 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 59.69 87.63 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 227227bf-afc3-4fd0-860c-5a6ae88d9b13))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR025") (unit 1)
         )
       )
     )
@@ -2203,6 +2178,31 @@
     )
   )
 
+  (symbol (lib_id "power:+5V") (at 26.67 92.71 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid e6dd8fdb-ebaf-4b03-962a-cb97bfe29dde)
+    (property "Reference" "#PWR026" (at 26.67 96.52 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 26.67 87.63 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 26.67 92.71 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 26.67 92.71 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid ec94d546-35fa-40ef-89b7-d1a13ac31763))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR026") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Connector_Generic:Conn_02x08_Top_Bottom") (at 181.61 76.2 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e9c8d8e7-9dcf-4fce-a107-fe85b7f0c3e2)
@@ -2268,31 +2268,6 @@
     )
   )
 
-  (symbol (lib_id "power:+12V") (at 59.69 100.33 0) (mirror x) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid f3153d66-06df-4c26-bfc2-097c79021c5f)
-    (property "Reference" "#PWR030" (at 59.69 96.52 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+12V" (at 58.42 105.41 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 59.69 100.33 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 59.69 100.33 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 66dc8409-75b8-4272-9b3b-699bd77f5a79))
-    (instances
-      (project "iowa-rover-kiosk-level-buttons"
-        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
-          (reference "#PWR030") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "power:+5V") (at 113.03 99.06 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f614e3db-1339-4f98-9b8a-3d07581e250c)
@@ -2338,6 +2313,31 @@
       (project "iowa-rover-kiosk-level-buttons"
         (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
           (reference "#PWR011") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:+5V") (at 72.39 85.09 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid ffd8987e-240f-4d44-ad6e-15159615a5a4)
+    (property "Reference" "#PWR032" (at 72.39 88.9 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V" (at 72.39 80.01 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 72.39 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 72.39 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 6b25e5c7-ea83-4276-bfbe-66a99899aff3))
+    (instances
+      (project "iowa-rover-kiosk-level-buttons"
+        (path "/1c0866bc-dbb5-4f16-814e-9708355c445a"
+          (reference "#PWR032") (unit 1)
         )
       )
     )
