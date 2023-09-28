@@ -665,7 +665,7 @@
     (uuid 73970bc2-0c42-4092-adf9-ee7e23c8fe17)
   )
 
-  (label "SDA" (at 120.65 93.98 180) (fields_autoplaced)
+  (label "SDA" (at 120.65 99.06 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 0ad6ecd3-d3a2-4bbf-8c81-9f3f0e57fd1a)
   )
@@ -677,7 +677,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 4b22b480-787a-4532-90a6-5bcd63a05694)
   )
-  (label "SCL" (at 120.65 99.06 180) (fields_autoplaced)
+  (label "SCL" (at 120.65 93.98 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 54ab3683-e0db-432d-8d54-3f9f4a14f832)
   )
