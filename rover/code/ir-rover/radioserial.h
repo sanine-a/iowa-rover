@@ -4,12 +4,13 @@
 #ifndef SERIAL_CONTROLLER_HPP
 #define SERIAL_CONTROLLER_HPP
 
-#define MAX_STRING_LEN 128
 
 #include <Arduino.h>
 #include <RHReliableDatagram.h>
 #include <RH_RF69.h>
 #include <SPI.h>
+
+#define MAX_STRING_LEN RH_RF69_MAX_MESSAGE_LEN - 3
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -64,7 +65,6 @@ class RadioSerial {
 
 		Serial.println("  set frequency & power");
 		driver.setFrequency(freq);
-		driver.setTxPower(14, true);
 	}
 	
 	void set_addrs(byte self, byte partner) {
@@ -85,7 +85,11 @@ class RadioSerial {
 		strcat(result,messageValue);
 		strcat(result,"}");
 		
-		Serial.println(result);
+		size_t len = strlen(result);
+		Serial.print(result); Serial.print(" "); Serial.println(len);
+		if (!radio.sendtoWait((uint8_t*) result, len+1, partner_addr)) {
+			Serial.println("WARNING: radio transmission failed!");
+		}
 	}
 	
 	void sendMessage(char* messageKey, int messageValue) {
@@ -119,13 +123,12 @@ class RadioSerial {
 	}
 
 	void update() {
-		if (radio.available()) {
-			uint8_t len;
-			if(radio.recvfromAck(buf, &len)) {
-				for (int i=0; i<len; i++) {
-					char c = (char) buf[i];
-					eatChar(c);
-				}
+		// needed because len only gets set if it is greater than message length!
+		uint8_t len = sizeof(buf);
+		if(radio.recvfromAck(buf, &len)) {
+			for (int i=0; i<len; i++) {
+				char c = (char) buf[i];
+				eatChar(c);
 			}
 		}
 	}

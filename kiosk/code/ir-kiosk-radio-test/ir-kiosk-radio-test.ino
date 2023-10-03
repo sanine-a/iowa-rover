@@ -21,11 +21,11 @@ Scheduler<8> sch;
 void setup() {
 	Serial.begin(115200);
 	radio.setup();
-  radio.set_addrs(0x22, 0x21);
+  radio.set_addrs(0x21, 0x22);
 	sch.setInterval([]{
 		Serial.println("tx < ping:1");
 		radio.sendMessage("ping", 1);
-	}, 2000);
+	}, 5000);
 }
 
 
