@@ -11,6 +11,7 @@
 #include <SPI.h>
 
 #define MAX_STRING_LEN RH_RF69_MAX_MESSAGE_LEN - 3
+#define MAX_RETRIES 3
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -65,6 +66,7 @@ class RadioSerial {
 
 		Serial.println("  set frequency & power");
 		driver.setFrequency(freq);
+		radio.setRetries(MAX_RETRIES);
 	}
 	
 	void set_addrs(byte self, byte partner) {
@@ -123,6 +125,8 @@ class RadioSerial {
 
 	void update() {
 		// needed because len only gets set if it is greater than message length!
+		// this makes sense (set len to your buffer size and it will never exceed that)
+		// but it annoyingly undocumented...
 		uint8_t len = sizeof(buf);
 		if(radio.recvfromAck(buf, &len)) {
 			for (int i=0; i<len; i++) {

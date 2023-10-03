@@ -86,7 +86,6 @@ class RadioSerial {
 		strcat(result,"}");
 		
 		size_t len = strlen(result);
-		Serial.print(result); Serial.print(" "); Serial.println(len);
 		if (!radio.sendtoWait((uint8_t*) result, len+1, partner_addr)) {
 			Serial.println("WARNING: radio transmission failed!");
 		}

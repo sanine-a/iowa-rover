@@ -2,6 +2,8 @@
 #include "schedule.h"
 #include "pins.h"
 
+#include "SerialController.hpp"
+
 
 class Radio : public RadioSerial {
 	public:
@@ -15,21 +17,26 @@ class Radio : public RadioSerial {
 } radio;
 
 
+SerialController serial;
+
+void on_serial(char *key, char *value) {
+	Serial.print("tx < "); Serial.print(key); Serial.print(":"); Serial.println(value);
+	radio.sendMessage(key, value);
+}
+
+
 Scheduler<8> sch;
 
 
 void setup() {
-	Serial.begin(115200);
+	serial.setup(115200, on_serial);
 	radio.setup();
-  radio.set_addrs(0x21, 0x22);
-	sch.setInterval([]{
-		Serial.println("tx < ping:1");
-		radio.sendMessage("ping", 1);
-	}, 5000);
+	radio.set_addrs(0x21, 0x22);
 }
 
 
 void loop() {
 	radio.update();
-	sch.update();
+	//sch.update();
+	serial.update();
 }

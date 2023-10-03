@@ -40,7 +40,24 @@ class Radio : public RadioSerial {
 
 		sendMessage("unknown-command", 1);
 	}
+
+	protected:
+	uint8_t command_idx;
 } radio;
+
+
+struct command_t {
+	enum {
+		MOVE_FORWARD,
+		MOVE_BACKWARD,
+		TURN_LEFT,
+		TURN_RIGHT,
+	} action;
+	float amount;
+};
+
+
+struct command_t commands[4];
 
 
 
