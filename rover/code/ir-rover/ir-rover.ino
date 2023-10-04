@@ -14,27 +14,78 @@
 int rover_addr, kiosk_addr;
 
 
-Motor left_wheel (AIN1, AIN2, PWMA);
-Motor right_wheel(BIN1, BIN2, PWMB);
+#define MOTOR_SPEED 1.0
+Motor left_wheel (AIN1, AIN2, PWMA, MOTOR_SPEED);
+Motor right_wheel(BIN1, BIN2, PWMB, MOTOR_SPEED);
 
+
+// motor movements
+void drive(int direction, float amount) {
+	left_wheel.setSpeed(direction * 1.0);
+	right_wheel.setSpeed(direction * 1.0);
+	delay(2000 * amount);
+}
+void move_forward(float amount) { drive(1, amount); }
+void move_backward(float amount) { drive(-1, amount); }
+void turn(int direction, float amount) {
+	left_wheel.setSpeed(direction * 1.0);
+	right_wheel.setSpeed(direction * -1.0);
+	delay(2000 * amount);
+}
+void turn_left(float amount) { turn(-1, amount); }
+void turn_right(float amount) { turn(1, amount); }
+
+
+struct command_t {
+	typedef enum {
+		MOVE_FORWARD,
+		MOVE_BACKWARD,
+		TURN_LEFT,
+		TURN_RIGHT,
+	} action_t;
+	action_t action;
+	float amount;
+};
 
 
 class Radio : public RadioSerial {
 	public:
-	Radio() : RadioSerial(RADIO_CS, RADIO_RST, RADIO_INT, RADIO_FREQ) {}
+	Radio() : RadioSerial(RADIO_CS, RADIO_RST, RADIO_INT, RADIO_FREQ), command_idx(-1) {}
 	void onMessage(const char *key, const char *value) {
-		if (strcmp(key, "left") == 0) {
-			left_wheel.setSpeed(strtod(value, nullptr));
+		Serial.print(" > "); Serial.print(key); Serial.print(":"); Serial.println(value);
+		if (strcmp(key, "command") == 0) {
+			command_idx = atoi(value);
+			// ensure indices stay in the valid range
+			if (command_idx >= sizeof(commands)/sizeof(struct command_t)) {
+				command_idx = -1;
+				sendMessage("invalid-command-index", 1);
+			}
 			return;
 		}
 
-		if (strcmp(key, "right") == 0) {
-			right_wheel.setSpeed(strtod(value, nullptr));
+		if (strcmp(key, "action") == 0) {
+			if (command_idx < 0) {
+				sendMessage("invalid-command-index", 1);
+			} else {
+				commands[command_idx].action = atoi(value);
+			}
 			return;
 		}
 
-		if (strcmp(key, "ping") == 0) {
-			sendMessage("pong", 1);
+		if (strcmp(key, "amount") == 0) {
+			if (command_idx < 0) {
+				sendMessage("invalid-command-index", 1);
+			} else {
+				commands[command_idx].amount = strtod(value, nullptr);
+			}
+			return;
+		}
+
+		if (strcmp(key, "execute") == 0) {
+			sendMessage("ready", 0);
+			execute();
+			command_idx = -1;
+			sendMessage("ready", 1);
 			return;
 		}
 
@@ -42,22 +93,43 @@ class Radio : public RadioSerial {
 	}
 
 	protected:
-	uint8_t command_idx;
+	int command_idx;
+	struct command_t commands[4];
+
+	void execute_command(struct command_t cmd) {
+		switch(cmd.action) {
+		case command_t::action_t::MOVE_FORWARD:
+			Serial.print("forward "); Serial.println(cmd.amount);
+			move_forward(cmd.amount);
+			break;
+		case command_t::action_t::MOVE_BACKWARD:
+			Serial.print("backward "); Serial.println(cmd.amount);
+			move_backward(cmd.amount);
+			break;
+		case command_t::action_t::TURN_LEFT:
+			Serial.print("left "); Serial.println(cmd.amount);
+			turn_left(cmd.amount);
+			break;
+		case command_t::action_t::TURN_RIGHT:
+			Serial.print("right "); Serial.println(cmd.amount);
+			turn_right(cmd.amount);
+			break;
+		default:
+			Serial.println("WARNING: unknown action!");
+			break;
+		}
+	}
+
+	void execute() {
+		for (int i=0; i<command_idx+1; i++) {
+			execute_command(commands[i]);
+		}
+		left_wheel.setSpeed(0);
+		right_wheel.setSpeed(0);
+	}
 } radio;
 
 
-struct command_t {
-	enum {
-		MOVE_FORWARD,
-		MOVE_BACKWARD,
-		TURN_LEFT,
-		TURN_RIGHT,
-	} action;
-	float amount;
-};
-
-
-struct command_t commands[4];
 
 
 

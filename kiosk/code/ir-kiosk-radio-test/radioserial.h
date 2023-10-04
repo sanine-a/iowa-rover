@@ -12,6 +12,7 @@
 
 #define MAX_STRING_LEN RH_RF69_MAX_MESSAGE_LEN - 3
 #define MAX_RETRIES 3
+#define TX_POWER 18
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -66,6 +67,7 @@ class RadioSerial {
 
 		Serial.println("  set frequency & power");
 		driver.setFrequency(freq);
+		driver.setTxPower(TX_POWER, true);
 		radio.setRetries(MAX_RETRIES);
 	}
 	
