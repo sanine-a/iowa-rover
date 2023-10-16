@@ -51,9 +51,9 @@ void write_tag(int index, rfid_tag_t tag, byte category) {
 
 void setup() {
 	Serial.begin(115200);
-	rfid_tag_t tag = {{0, 1, 2, 3, 4 }};
-	set_n_tags(70);
-	write_tag(45, tag, 0);
+	rfid_tag_t tag = {{0, 1, 2, 3, 8 }};
+	set_n_tags(682);
+	write_tag(681, tag, 0);
 
 	delay(20);
 

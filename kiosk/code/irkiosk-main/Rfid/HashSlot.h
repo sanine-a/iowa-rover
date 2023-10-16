@@ -1,6 +1,7 @@
 #pragma once
 
 #include <EEPROM.h>
+#include "Tag.h"
 
 #define FLAG_UNOCCUPIED 0x80
 #define FLAG_DELETED  0x40
@@ -37,6 +38,17 @@ struct HashSlot {
 		for (int i=0; i<5; i++) {
 			tag[i] = EEPROM.read(addr+i+1);
 		}
+	}
+
+	bool matchesTag(RfidTag tag) {
+		int addr = getAddress();
+		for (int i=0; i<5; i++) {
+			if(tag[i] != EEPROM.read(addr+i+1)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	bool isOccupied(bool inserting) {

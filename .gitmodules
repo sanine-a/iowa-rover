@@ -1,0 +1,6 @@
+[submodule "kiosk/code/irkiosk-main/lily-test"]
+	path = kiosk/code/irkiosk-main/lily-test
+	url = https://sanine.net/git/lily-test
+[submodule "kiosk/code/irkiosk-main/kiosk/code/irkiosk-main/lily-test"]
+	path = kiosk/code/irkiosk-main/kiosk/code/irkiosk-main/lily-test
+	url = https://sanine.net/git/lily-test

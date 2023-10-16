@@ -60,4 +60,16 @@ struct RfidTag {
 			return false;
 	    return true;
 	}	
+
+	// hash the tag for use with a hash table
+	int hash(unsigned int tbl_size) {
+		// split into segments of 10 bits each
+		int a = (tagData[0] << 2) | (tagData[1] >> 6);
+		int b = (tagData[1] << 4) | (tagData[2] >> 4);
+		int c = (tagData[2] << 6) | (tagData[3] >> 2);
+		int d = (tagData[3] << 8) | (tagData[4] >> 0);
+
+		// sum segments, mod table size
+		return (a + b + c + d) % tbl_size;
+	}
 };
