@@ -18,73 +18,33 @@
 // the 6 least significant bits of `flags` contain the category information for the tag.
 
 struct HashSlot {
-	unsigned int slot;
+	unsigned int slot_index;
 
-	int getAddress() { return 6*slot; }
+	unsigned int address() { return 6*slot_index; }
 
-	byte getFlags() {
-		int address = getAddress();
-		return EEPROM.read(address);
-	}
-
-	byte getCategory() {
-		byte flags = getFlags();
-		return flags & FLAG_CATEGORY;
-	}
-
-	RfidTag getTag() {
-		int addr = getAddress();
-		RfidTag tag;
-		for (int i=0; i<5; i++) {
-			tag[i] = EEPROM.read(addr+i+1);
+	// check if a slot is occupied
+	// returns true if the cell is occupied AND undeleted when inserting
+	// returns true if the cell is occupied even if deleted when searching
+	bool isOccupied(bool searching) {
+		uint8_t flag = EEPROM.read(address());
+		if (flag & FLAG_UNOCCUPIED) {
+			// the slot is unoccupied!
+			return false;
 		}
+
+		if (!searching && (flag & FLAG_DELETED)) {
+			return false;
+		}
+
+		return true;
 	}
 
+	// check if a slot matches a particular tag
 	bool matchesTag(RfidTag tag) {
-		int addr = getAddress();
+		unsigned int addr = address();
 		for (int i=0; i<5; i++) {
-			if(tag[i] != EEPROM.read(addr+i+1)) {
-				return false;
-			}
+			if (EEPROM.read(addr+i+1) != tag[i]) { return false; }
 		}
-
 		return true;
-	}
-
-	bool isOccupied(bool inserting) {
-		byte flags = getFlags();
-		if (flags & FLAG_UNOCCUPIED) {
-			// a 1 in the MSB indicates an unoccupied slot
-			return false;
-		}
-
-		if (inserting && (flags & FLAG_DELETED)) {
-			// deleted slots are treated as unoccupied when inserting
-			return false;
-		}
-
-		return true;
-	}
-
-	void setUnoccupied() {
-		int addr = getAddress();
-		EEPROM.update(addr, 0xff);
-	}
-
-	void setDeleted() {
-		int addr = getAddress();
-		EEPROM.update(addr, 0x7f);
-	}
-
-	void setCategory(byte category) {
-		int addr = getAddress();
-		EEPROM.update(addr, category & FLAG_CATEGORY);
-	}
-
-	void setTag(RfidTag tag) {
-		int addr = getAddress();
-		for (int i=0; i<5; i++) {
-			EEPROM.update(addr+i+1, tag[i]);
-		}
 	}
 };

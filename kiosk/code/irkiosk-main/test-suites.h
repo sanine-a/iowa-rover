@@ -1,7 +1,7 @@
 #pragma once
 
 #define TEST_SUITES \
-	X(eeprom_hash) \
+	X(test_HashSlot) \
 
 
 #define X(suite) extern void (*suite)();
