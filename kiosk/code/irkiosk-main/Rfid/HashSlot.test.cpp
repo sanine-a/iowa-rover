@@ -86,5 +86,19 @@ LILY_TEST("Get/set the category bits") {
 #include LILY_PUSH_TEST()
 
 
+LILY_TEST("set the tag data") {
+	EEPROM.clear();
+	struct HashSlot hs = { 2 };
+	RfidTag tag(0, 1, 2, 3, 4);
+	hs.setTag(tag);
+	CHECK_EQ(EEPROM.read(13), 0, "%d");
+	CHECK_EQ(EEPROM.read(14), 1, "%d");
+	CHECK_EQ(EEPROM.read(15), 2, "%d");
+	CHECK_EQ(EEPROM.read(16), 3, "%d");
+	CHECK_EQ(EEPROM.read(17), 4, "%d");
+}
+#include LILY_PUSH_TEST()
+
+
 #define LILY_FILE_END
 #include LILY_REGISTER_TESTS()

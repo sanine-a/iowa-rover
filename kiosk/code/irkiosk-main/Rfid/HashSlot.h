@@ -39,6 +39,10 @@ struct HashSlot {
 		return true;
 	}
 
+	bool isDeleted() {
+		return EEPROM.read(address()) & FLAG_DELETED;
+	}
+
 
 	// get the category field of the flags byte
 	uint8_t getCategory() {
@@ -80,5 +84,18 @@ struct HashSlot {
 			if (EEPROM.read(addr+i+1) != tag[i]) { return false; }
 		}
 		return true;
+	}
+
+	// set the tag
+	void setTag(RfidTag tag) {
+		unsigned int addr = address();
+		for (int i=0; i<5; i++) {
+			EEPROM.update(addr+i+1, tag[i]);
+		}
+	}
+
+	// increment the slot index
+	void increment(size_t tbl_size) {
+		slot_index = (slot_index + 1) % tbl_size;
 	}
 };
