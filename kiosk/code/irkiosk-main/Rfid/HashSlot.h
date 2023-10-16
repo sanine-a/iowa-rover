@@ -39,6 +39,40 @@ struct HashSlot {
 		return true;
 	}
 
+
+	// get the category field of the flags byte
+	uint8_t getCategory() {
+		return EEPROM.read(address()) & FLAG_CATEGORY;
+	}
+
+	// set the category field of the flags byte
+	void setCategory(uint8_t category) {
+		EEPROM.update(address(), category & FLAG_CATEGORY);
+	}
+
+	// set the occupied bit of the flags byte
+	void setOccupied(bool occupied) {
+		unsigned int addr = address();
+		uint8_t flag = EEPROM.read(addr);
+		if (occupied) {
+			EEPROM.update(addr, flag & (~FLAG_UNOCCUPIED));
+		} else {
+			EEPROM.update(addr, flag | FLAG_UNOCCUPIED);
+		}
+	}
+
+	// set the deleted bit of the flags byte
+	void setDeleted(bool deleted) {
+		unsigned int addr = address();
+		uint8_t flag = EEPROM.read(addr);
+		if (deleted) {
+			EEPROM.update(addr, flag | FLAG_DELETED);
+		} else {
+			EEPROM.update(addr, flag & (~FLAG_DELETED));
+		}
+	}
+
+
 	// check if a slot matches a particular tag
 	bool matchesTag(RfidTag tag) {
 		unsigned int addr = address();

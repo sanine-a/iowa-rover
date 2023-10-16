@@ -50,5 +50,41 @@ LILY_TEST("Matching tags") {
 #include LILY_PUSH_TEST()
 
 
+LILY_TEST("Set/unset the occupied & deleted bits") {
+	struct HashSlot hs { 4 };
+	EEPROM.clear();
+	EEPROM.write(24, 0x33);
+
+	hs.setOccupied(false);
+	CHECK_EQ(EEPROM.read(24) & FLAG_UNOCCUPIED, FLAG_UNOCCUPIED, "%d");
+	CHECK_EQ(EEPROM.read(24) & FLAG_CATEGORY, 0x33, "%d");
+	hs.setOccupied(true);
+	CHECK_EQ(EEPROM.read(24) & FLAG_UNOCCUPIED, 0, "%d");
+	CHECK_EQ(EEPROM.read(24) & FLAG_CATEGORY, 0x33, "%d");
+
+	hs.setDeleted(false);
+	CHECK_EQ(EEPROM.read(24) & FLAG_DELETED, 0, "%d");
+	CHECK_EQ(EEPROM.read(24) & FLAG_CATEGORY, 0x33, "%d");
+	hs.setDeleted(true);
+	CHECK_EQ(EEPROM.read(24) & FLAG_DELETED, FLAG_DELETED, "%d");
+	CHECK_EQ(EEPROM.read(24) & FLAG_CATEGORY, 0x33, "%d");
+}
+#include LILY_PUSH_TEST()
+
+
+LILY_TEST("Get/set the category bits") {
+	EEPROM.clear();
+	struct HashSlot hs = { 20 };
+	CHECK_EQ(hs.getCategory(), 0x3f, "%x");
+	EEPROM.write(120, 0xab);
+	CHECK_EQ(hs.getCategory(), 0x2b, "%x");
+
+	EEPROM.write(120, 0x00);
+	hs.setCategory(0xff);
+	CHECK_EQ(EEPROM.read(120), 0x3f, "%x");
+}
+#include LILY_PUSH_TEST()
+
+
 #define LILY_FILE_END
 #include LILY_REGISTER_TESTS()
