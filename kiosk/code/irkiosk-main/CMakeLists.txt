@@ -12,7 +12,7 @@ include_directories(
 # i defy the cmake gods!! >:c
 file(GLOB_RECURSE TEST_FILES "*.test.cpp")
 add_executable(kiosk-tests 
-	${CMAKE_SOURCE_DIR}/test-main.cpp
+	${CMAKE_SOURCE_DIR}/test/test-main.cpp
 	${CMAKE_SOURCE_DIR}/mock/mock_impl.cpp
 	${TEST_FILES}
 )

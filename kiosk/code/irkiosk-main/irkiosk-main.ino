@@ -1,4 +1,22 @@
 #include <Wire.h>
+#include "PolledSwitch.h"
+#include "pins.h"
+
+#include "scheduler.h"
+#include "programmer/leds.h"
+
+
+class Btn : public PolledSwitch {
+	public:
+	Btn() : PolledSwitch(PROG_BTN1) {}
+	void onLow() {
+		Serial.println("press!");
+	}
+	void onHigh() {
+		Serial.println("release!");
+	}
+} btn;
+
 
 void check_addr(uint8_t addr) {
 	Wire.requestFrom(addr, 6);
@@ -9,19 +27,33 @@ void check_addr(uint8_t addr) {
 	while (Wire.available()) {
 		Serial.println(Wire.read(), HEX);
 	}
-
 }
+
+Scheduler sch;
+Programmer::Leds leds;
 
 void setup() {
 	Serial.begin(115200);
-
-	Wire.begin();
-
-	check_addr(0x70);
-	check_addr(0x71);
-	check_addr(0x72);
-	check_addr(0x73);
-	check_addr(0x74);
+	leds.flashForward();
+	sch.setTimeout([]{
+		leds.clearForward();
+		leds.flashBackward();
+		sch.setTimeout([]{
+			leds.clearBackward();
+			leds.flashLeft();
+			sch.setTimeout([]{
+				leds.clearLeft();
+				leds.flashRight();
+				sch.setTimeout([]{
+					leds.clearAll();
+				}, 1000);
+			}, 1000);
+		}, 1000);
+	}, 1000);
 }
 
-void loop() {}
+void loop() {
+	sch.update();
+	leds.update();
+	btn.update();
+}
