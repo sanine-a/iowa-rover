@@ -4,11 +4,8 @@
 #include "../scheduler.h"
 
 
-template<unsigned int pin>
-void toggle() {
-	static bool state = true;
-	digitalWrite(pin, state);
-	state = !state;
+void toggle(int pin) {
+	digitalWrite(pin, !digitalRead(pin));
 }
 
 namespace Programmer {
@@ -59,16 +56,20 @@ class Leds {
 		} else {
 			switch(index) {
 			case 0:
-				intervals[0] = sch.setInterval(toggle<PROG_LED1>, 200);
+				intervals[0] = 
+					sch.setInterval([]{ toggle(PROG_LED1); }, 200);
 				return;
 			case 1:
-				intervals[1] = sch.setInterval(toggle<PROG_LED2>, 200);
+				intervals[1] =
+					sch.setInterval([]{ toggle(PROG_LED2); }, 200);
 				return;
 			case 2:
-				intervals[2] = sch.setInterval(toggle<PROG_LED3>, 200);
+				intervals[2] =
+					sch.setInterval([]{ toggle(PROG_LED3); }, 200);
 				return;
 			case 3:
-				intervals[3] = sch.setInterval(toggle<PROG_LED4>, 200);
+				intervals[3] = 
+					sch.setInterval([]{ toggle(PROG_LED4); }, 200);
 				return;
 			default:
 				return;

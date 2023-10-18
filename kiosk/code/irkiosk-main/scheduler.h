@@ -1,9 +1,10 @@
 #pragma once
 
+#include "lambda.h"
 #include "ll.h"
 
 struct Task {
-	void (*fun)();
+	Lambda<void(void)> lambda;
 	unsigned long start;
 	unsigned int id;
 	bool ready() { return millis() >= start; }
@@ -22,9 +23,9 @@ class Scheduler {
 	public:
 	Scheduler() : interval_id(0), timeout_id(0), intervals(), timeouts() {}
 
-	unsigned int setTimeout(void (*fun)(), unsigned long time_to_start) {
+	unsigned int setTimeout(Lambda<void(void)> lambda, unsigned long time_to_start) {
 		TimeoutTask t;
-		t.fun = fun;
+		t.lambda = lambda;
 		t.id = timeout_id;
 		timeout_id++;
 		t.start = millis() + time_to_start;
@@ -41,9 +42,9 @@ class Scheduler {
 	}
 
 
-	unsigned int setInterval(void (*fun)(), unsigned long period) {
+	unsigned int setInterval(Lambda<void(void)> lambda, unsigned long period) {
 		IntervalTask i;
-		i.fun = fun;
+		i.lambda = lambda;
 		i.id = interval_id;
 		interval_id += 1;
 		i.start = millis() + period;
@@ -64,7 +65,7 @@ class Scheduler {
 		for (auto node = intervals.get_next(); node != nullptr; node = node->get_next()) {
 			IntervalTask& interval = node->get_value();
 			if (interval.ready()) {
-				interval.fun();
+				interval.lambda();
 				interval.next();
 			}
 		}
@@ -72,10 +73,8 @@ class Scheduler {
 		for (auto node = timeouts.get_next(); node != nullptr; node = node->get_next()) {
 			TimeoutTask& timeout = node->get_value();
 			if (timeout.ready()) {
-				timeout.fun();
+				timeout.lambda();
 				node->erase(&node);
-				// node = node->get_prev();
-				// node->erase_next();
 			}
 		}
 	}
