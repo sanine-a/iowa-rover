@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ll.h"
+
 struct Task {
 	void (*fun)();
 	unsigned long start;
@@ -13,48 +15,6 @@ struct IntervalTask : public Task {
 	bool next() {
 		start += interval;
 	}
-};
-
-
-template <typename T>
-class LLNode {
-	public:
-	LLNode() : next(nullptr), prev(nullptr) {};
-	LLNode(T value) : value(value), next(nullptr), prev(nullptr) {};
-
-	void append(T value) {
-		if (next == nullptr) {
-			LLNode *node = new LLNode(value);
-			node->prev = this;
-			next = node;
-		} else {
-			next->append(value);
-		}
-	}
-	
-	void erase() {
-		if (prev != nullptr) {
-			prev->next = next;
-		}
-		if (next != nullptr) {
-			next->prev = prev;
-		}
-		// possibly evil, be careful
-		delete this;
-	}
-
-	void erase_next() {
-		if (next != nullptr) { next->erase(); }
-	}
-
-	LLNode * get_next() { return next; }
-	LLNode * get_prev() { return prev; }
-	T& get_value() { return value; }
-
-	protected:
-	T value;
-	LLNode *next;
-	LLNode *prev;
 };
 
 
@@ -113,8 +73,9 @@ class Scheduler {
 			TimeoutTask& timeout = node->get_value();
 			if (timeout.ready()) {
 				timeout.fun();
-				node = node->get_prev();
-				node->erase_next();
+				node->erase(&node);
+				// node = node->get_prev();
+				// node->erase_next();
 			}
 		}
 	}
