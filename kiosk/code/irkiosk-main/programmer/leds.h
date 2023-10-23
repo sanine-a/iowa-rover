@@ -23,15 +23,19 @@ class Leds {
 		for (int i=0; i<4; i++) { intervals[i] = -1; }
 	}
 
+	void lightForward()  { digitalWrite(PROG_LED1, 1); }
 	void flashForward()  { setFlashing(0, true); }
 	void clearForward()  { setFlashing(0, false); digitalWrite(PROG_LED1, 0); }
 
+	void lightBackward()  { digitalWrite(PROG_LED2, 1); }
 	void flashBackward() { setFlashing(1, true); }
 	void clearBackward() { setFlashing(1, false); digitalWrite(PROG_LED2, 0); }
 
+	void lightLeft()     { digitalWrite(PROG_LED3, 1); }
 	void flashLeft()     { setFlashing(2, true); }
 	void clearLeft()     { setFlashing(2, false); digitalWrite(PROG_LED3, 0); }
 
+	void lightRight()    { digitalWrite(PROG_LED4, 1); }
 	void flashRight()    { setFlashing(3, true); }
 	void clearRight()    { setFlashing(3, false); digitalWrite(PROG_LED4, 0); }
 

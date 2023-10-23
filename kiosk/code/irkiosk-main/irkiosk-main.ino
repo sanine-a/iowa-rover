@@ -20,6 +20,7 @@ class Rx : public Subscriber<Programmer::ButtonState> {
 		Serial.print("left: ");     Serial.println(state.left);
 		Serial.print("right: ");    Serial.println(state.right);
 		Serial.print("erase: ");    Serial.println(state.erase);
+		Serial.println();
 	}
 } rx;
 
