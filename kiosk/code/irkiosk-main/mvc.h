@@ -3,6 +3,9 @@
 #include "scheduler.h"
 #include "signal.h"
 
+#include "Rfid/HashTable.h"
+#include "Rfid/Tag.h"
+
 #include "programmer_buttons.h"
 #include "programmer_controller.h"
 #include "programmer_leds.h"
@@ -13,7 +16,19 @@
 
 
 struct Model {
-	void update();
+	struct Command {
+		typedef enum {
+			FORWARD, BACKWARD,
+			LEFT, RIGHT, NONE
+		} Action;
+		Action action;
+		float amount;
+	};
+	struct Command commands[4];
+
+	HashTable tbl;
+
+	Model();
 };
 
 struct View {
@@ -25,15 +40,15 @@ struct View {
 	void update();
 };
 
-struct Controller : public Subscriber<struct RfidEvent> {
+struct Controller {
 	Scheduler sch;
 	struct View view;
 	struct Model model;
 
+	Programmer::Controller progController;
+
 	Controller();
 	void update();
-
-	void on(struct RfidEvent);
 };
 
 

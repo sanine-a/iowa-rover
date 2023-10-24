@@ -41,6 +41,9 @@ class Leds {
 		clearLeft();
 		clearRight();
 	}
+	void flashAll() {
+		for (int i=0; i<4; i++) { setFlashing(i, true); }
+	}
 
 	void update() {
 		sch.update();

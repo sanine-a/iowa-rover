@@ -3,7 +3,7 @@
 
 // --===== Model =====--
 
-void Model::update() {}
+Model::Model() : tbl(682) {}
 
 
 // --===== View =====--
@@ -17,8 +17,7 @@ void View::update() {
 
 // --===== Controller =====--
 
-Controller::Controller() {
-	view.rfid.attach(this);
+Controller::Controller() : progController(view.progBtns, view.progLeds, view.rfid, model.tbl) {
 
 	#define HALF_SEC 500
 	sch.setTimeout([this]{ view.srLamps.inc1.turnOn(); view.srLamps.show(); }, 1 * HALF_SEC);
@@ -32,19 +31,9 @@ Controller::Controller() {
 }
 
 void Controller::update() {
-	model.update();
 	view.update();
 	sch.update();
-}
-
-
-void Controller::on(struct RfidEvent e) {
-	char str[16];
-	e.tag.toString(str, sizeof(str));
-	Serial.println("== RFID READ ==");
-	Serial.print("  from: "); Serial.println(e.sourceAddr, HEX);
-	Serial.print("  tag:  "); Serial.println(str);
-	Serial.println();
+	progController.update();
 }
 
 
