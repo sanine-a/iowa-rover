@@ -53,6 +53,7 @@ template<typename T>
 class Subscriber {
 	public:
 	// the constructor subscribes to a publisher
+	Subscriber() : publisher(nullptr) {}
 	Subscriber(Publisher<T> *publisher) : publisher(publisher) {
 		publisher->attach(this);
 	}

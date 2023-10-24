@@ -24,14 +24,14 @@ void ShiftLamp::turnOff() { write0(); }
 
 ShiftLamps::ShiftLamps() :
 inc1(data, 0), dec1(data, 1),
-inc2(data, 2), dec2(data, 3),
+inc2(data, 3), dec2(data, 2),
 inc3(data, 4), dec3(data, 5),
 inc4(data, 6), dec4(data, 7),
 
 rfid1(data, 8),
 rfid2(data, 9),
-rfid3(data, 10),
-rfid4(data, 11),
+rfid3(data, 11),
+rfid4(data, 10),
 
 ready(data, 12), error(data, 13), running(data, 14), txBtn(data, 15) {
 	pinMode(SHIFT_DATA, OUTPUT);
@@ -50,6 +50,6 @@ void ShiftLamps::clear() {
 void ShiftLamps::show() {
 	digitalWrite(SHIFT_LATCH, 0);
 	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[1]);
-	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[2]);
+	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[0]);
 	digitalWrite(SHIFT_LATCH, 1);
 }
