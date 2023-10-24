@@ -1,12 +1,8 @@
 #pragma once
 
-#include "../pins.h"
-#include "../scheduler.h"
+#include "pins.h"
+#include "scheduler.h"
 
-
-void toggle(int pin) {
-	digitalWrite(pin, !digitalRead(pin));
-}
 
 namespace Programmer {
 class Leds {
@@ -61,19 +57,19 @@ class Leds {
 			switch(index) {
 			case 0:
 				intervals[0] = 
-					sch.setInterval([]{ toggle(PROG_LED1); }, 200);
+					sch.setInterval([]{ digitalWrite(PROG_LED1, !digitalRead(PROG_LED1)); }, 200);
 				return;
 			case 1:
 				intervals[1] =
-					sch.setInterval([]{ toggle(PROG_LED2); }, 200);
+					sch.setInterval([]{ digitalWrite(PROG_LED2, !digitalRead(PROG_LED2)); }, 200);
 				return;
 			case 2:
 				intervals[2] =
-					sch.setInterval([]{ toggle(PROG_LED3); }, 200);
+					sch.setInterval([]{ digitalWrite(PROG_LED3, !digitalRead(PROG_LED3)); }, 200);
 				return;
 			case 3:
 				intervals[3] = 
-					sch.setInterval([]{ toggle(PROG_LED4); }, 200);
+					sch.setInterval([]{ digitalWrite(PROG_LED4, !digitalRead(PROG_LED4)); }, 200);
 				return;
 			default:
 				return;

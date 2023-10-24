@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Arduino.h>
+
 class PolledSwitch {
 	public:
 	PolledSwitch(unsigned int pin, unsigned long debounceTime=5, int mode=INPUT_PULLUP)

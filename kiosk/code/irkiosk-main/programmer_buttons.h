@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../PolledSwitch.h"
-#include "../pins.h"
-#include "../signal.h"
-#include "../scheduler.h"
+#include "PolledSwitch.h"
+#include "pins.h"
+#include "signal.h"
+#include "scheduler.h"
 
 
 namespace Programmer {
@@ -61,26 +61,5 @@ class Buttons : public Publisher<ButtonState> {
 	struct ButtonState state;
 	Btn forward, backward, left, right, erase;
 };
-
-#if defined(IMPL)
-
-Btn::Btn(int pin, Buttons& pub, ButtonState::S& state)
-: PolledSwitch(pin), pub(pub), state(state), timeout(-1) {}
-
-void Btn::onLow() {
-	state = ButtonState::S::PRESS;
-	timeout = pub.sch.setTimeout([this]{
-		this->state = ButtonState::S::HOLD;
-		pub.publish(pub.state);
-	}, 500);
-	pub.publish(pub.state);
-}
-void Btn::onHigh() {
-	state = ButtonState::S::RELEASE;
-	pub.sch.clearTimeout(timeout);
-	pub.publish(pub.state);
-}
-
-#endif
 
 } // end namespace Programmer
