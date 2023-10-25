@@ -2,6 +2,7 @@
 
 #include "scheduler.h"
 #include "signal.h"
+#include "model.h"
 
 #include "Rfid/HashTable.h"
 #include "Rfid/Tag.h"
@@ -13,30 +14,18 @@
 #include "sr_lamp.h"
 
 #include "rfid_reader.h"
+#include "rfid_monitor.h"
+#include "slot.h"
 
-
-struct Model {
-	struct Command {
-		typedef enum {
-			FORWARD, BACKWARD,
-			LEFT, RIGHT, NONE
-		} Action;
-		Action action;
-		float amount;
-	};
-	struct Command commands[4];
-
-	HashTable tbl;
-
-	Model();
-};
 
 struct View {
 	Programmer::Buttons progBtns;
 	Programmer::Leds progLeds;
 	ShiftLamps srLamps;
 	Rfid rfid;
+	SlotButtons slotButtons;
 
+	View(Model& model);
 	void update();
 };
 
@@ -45,7 +34,9 @@ struct Controller {
 	struct View view;
 	struct Model model;
 
+	RfidMonitor rfidMonitor;
 	Programmer::Controller progController;
+	SlotReader slotReader1, slotReader2, slotReader3, slotReader4;
 
 	Controller();
 	void update();

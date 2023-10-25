@@ -9,7 +9,7 @@ using namespace Programmer;
 
 Controller::Controller(Buttons &buttons, Leds &leds, Rfid& rfid, HashTable& tbl) 
 : Subscriber<ButtonState>::Subscriber(&buttons), Subscriber<RfidEvent>::Subscriber(&rfid), 
-leds(leds), resetTimeout(0), resetting(false), training(false),
+leds(leds), resetTimeout(0), resetting(false), training(false), tbl(tbl),
 tag(0, 0, 0, 0, 0)
 {}
 
