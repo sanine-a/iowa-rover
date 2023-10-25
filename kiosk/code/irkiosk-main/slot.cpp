@@ -6,8 +6,12 @@
 SlotReader::SlotReader(
 	Model& model, unsigned int commandIndex, Scheduler& sch, 
 	Rfid& rfid, byte addr, 
-	ShiftLamps& lamps, ShiftLamp& lamp
-) : Subscriber(&rfid), addr(addr),
+	ShiftLamps& lamps, ShiftLamp& lamp,
+	SlotButtons& slotButtons
+) : 
+	Subscriber<SlotButtonEvent>::Subscriber(&slotButtons),
+	Subscriber<RfidEvent>::Subscriber(&rfid), 
+	addr(addr),
 	model(model), commandIndex(commandIndex), sch(sch), 
 	lamps(lamps), lamp(lamp) {}
 
@@ -35,6 +39,25 @@ void SlotReader::on(RfidEvent e) {
 			lamp.turnOn(); lamps.show();
 		}, 200);
 	}
+}
+
+
+void SlotReader::on(SlotButtonEvent e) {
+	if (e.sourceSlot != commandIndex) { return; }
+	if (e.btn == SlotButtonEvent::Button::PUSH_INCREMENT) {
+		model.commands[commandIndex].amount += (1.0/8.0);
+	} else if (e.btn == SlotButtonEvent::Button::PUSH_DECREMENT) {
+		model.commands[commandIndex].amount -= (1.0/8.0);
+	}
+
+	if (model.commands[commandIndex].amount < 0) {
+		model.commands[commandIndex].amount  = 0;
+	}
+	if (model.commands[commandIndex].amount > 1) {
+		model.commands[commandIndex].amount  = 1;
+	}
+
+	Serial.print(commandIndex); Serial.print(" amount: "); Serial.println(model.commands[commandIndex].amount);
 }
 
 
@@ -84,4 +107,55 @@ void SlotButtons::update() {
 	inc2.update(); dec2.update();
 	inc3.update(); dec3.update();
 	inc4.update(); dec4.update();
+}
+
+
+SlotBarGraph::SlotBarGraph(Model& model, unsigned int slotIndex, Adafruit_NeoPixel& strip) :
+	model(model), slotIndex(slotIndex), strip(strip) {}
+
+
+void SlotBarGraph::update() {
+	if (model.commands[slotIndex].action == Model::Command::Action::NONE) { 
+		showAmount(0);
+	} else {
+		showAmount(8 * model.commands[slotIndex].amount);
+	}
+}
+
+void SlotBarGraph::showAmount(unsigned int amount) {
+	auto color = strip.Color(255, 0, 0);
+	unsigned int offset = slotIndex * 8;
+	for (int i=0; i<8; i++) {
+		unsigned int px = i + offset;
+		if (i < amount) {
+			strip.setPixelColor(px, color);
+		} else {
+			strip.setPixelColor(px, strip.Color(0, 0, 0));
+		}
+	}
+}
+
+void SlotBarGraph::clear() {
+	showAmount(0);
+}
+
+
+SlotBarGraphs::SlotBarGraphs(Model& model) :
+	strip(32, NEOPIXELS, NEO_GRB + NEO_KHZ800),
+	bar1(model, 0, strip),
+	bar2(model, 1, strip),
+	bar3(model, 2, strip),
+	bar4(model, 3, strip)
+{
+	strip.begin();
+	strip.clear();
+}
+
+
+void SlotBarGraphs::update() {
+	bar1.update();
+	bar2.update();
+	bar3.update();
+	bar4.update();
+	strip.show();
 }

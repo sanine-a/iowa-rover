@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <Adafruit_NeoPixel.h>
 
 #include "model.h"
 #include "signal.h"
@@ -19,17 +20,21 @@ struct SlotButtonEvent {
 };
 
 
+struct SlotButtons;
 
 
-class SlotReader : public Subscriber<RfidEvent> {
+
+class SlotReader : public Subscriber<RfidEvent>, public Subscriber<SlotButtonEvent> {
 	public:
 	SlotReader(
 		Model& model, unsigned int commandIndex, Scheduler& sch, 
 		Rfid& rfid, byte addr, 
-		ShiftLamps& lamps, ShiftLamp& lamp
+		ShiftLamps& lamps, ShiftLamp& lamp,
+		SlotButtons& slotButtons
 	);
 	SlotReader(Model& model, Scheduler& sch, Rfid& rfid, ShiftLamps& lamps, ShiftLamp& lamp);
 	void on(RfidEvent e);
+	void on(SlotButtonEvent e);
 
 	private:
 	Model& model;
@@ -70,5 +75,27 @@ struct SlotButtons : public Publisher<SlotButtonEvent> {
 	SlotButton inc3, dec3;
 	SlotButton inc4, dec4;
 	SlotButtons(Model& model, ShiftLamps& lamps);
+	void update();
+};
+
+
+class SlotBarGraph {
+	public:
+	SlotBarGraph(Model& model, unsigned int slotIndex, Adafruit_NeoPixel& strip);
+	void update();
+
+	private:
+	Model& model;
+	Adafruit_NeoPixel& strip;
+	unsigned int slotIndex;
+	void showAmount(unsigned int amount);
+	void clear();
+};
+
+
+struct SlotBarGraphs {
+	Adafruit_NeoPixel strip;
+	SlotBarGraph bar1, bar2, bar3, bar4;
+	SlotBarGraphs(Model& model);
 	void update();
 };

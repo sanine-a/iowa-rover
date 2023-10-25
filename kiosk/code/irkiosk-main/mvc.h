@@ -24,6 +24,7 @@ struct View {
 	ShiftLamps srLamps;
 	Rfid rfid;
 	SlotButtons slotButtons;
+	SlotBarGraphs slotBarGraphs;
 
 	View(Model& model);
 	void update();
