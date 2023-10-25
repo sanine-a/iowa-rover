@@ -17,6 +17,8 @@
 #include "rfid_monitor.h"
 #include "slot.h"
 
+#include "transmit.h"
+
 
 struct View {
 	Programmer::Buttons progBtns;
@@ -25,6 +27,7 @@ struct View {
 	Rfid rfid;
 	SlotButtons slotButtons;
 	SlotBarGraphs slotBarGraphs;
+	TxButton txButton;
 
 	View(Model& model);
 	void update();
@@ -38,6 +41,7 @@ struct Controller {
 	RfidMonitor rfidMonitor;
 	Programmer::Controller progController;
 	SlotReader slotReader1, slotReader2, slotReader3, slotReader4;
+	Transmitter radio;
 
 	Controller();
 	void update();

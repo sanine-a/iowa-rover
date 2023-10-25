@@ -8,32 +8,36 @@
 ShiftRegisterPin::ShiftRegisterPin(byte* root, size_t offset)
 : b(root + OFFSET_BYTE(offset)), pos(OFFSET_BIT(offset)) {}
 
-void ShiftRegisterPin::write1() {
+bool ShiftRegisterPin::write1() {
+	byte old = *b;
 	*b |= 1 << pos;
+	return old != *b;
 }
 
-void ShiftRegisterPin::write0() {
+bool ShiftRegisterPin::write0() {
+	byte old = *b;
 	*b &= ~(1 << pos);
+	return old != *b;
 }
 
 
-ShiftLamp::ShiftLamp(byte* root, size_t index) : ShiftRegisterPin(root, index) {}
-void ShiftLamp::turnOn() { write1(); }
-void ShiftLamp::turnOff() { write0(); }
+ShiftLamp::ShiftLamp(ShiftLamps* lamps, size_t index) : lamps(lamps), ShiftRegisterPin(lamps->data, index) {}
+void ShiftLamp::turnOn()  { if (write1()) { lamps->show(); } }
+void ShiftLamp::turnOff() { if (write0()) { lamps->show(); } }
 
 
 ShiftLamps::ShiftLamps() :
-inc1(data, 0), dec1(data, 1),
-inc2(data, 3), dec2(data, 2),
-inc3(data, 4), dec3(data, 5),
-inc4(data, 6), dec4(data, 7),
+inc1(this, 0), dec1(this, 1),
+inc2(this, 3), dec2(this, 2),
+inc3(this, 4), dec3(this, 5),
+inc4(this, 6), dec4(this, 7),
 
-rfid1(data, 8),
-rfid2(data, 9),
-rfid3(data, 11),
-rfid4(data, 10),
+rfid1(this, 8),
+rfid2(this, 9),
+rfid3(this, 11),
+rfid4(this, 10),
 
-ready(data, 12), error(data, 13), running(data, 14), txBtn(data, 15) {
+ready(this, 12), error(this, 13), running(this, 14), txBtn(this, 15) {
 	pinMode(SHIFT_DATA, OUTPUT);
 	pinMode(SHIFT_CLOCK, OUTPUT);
 	pinMode(SHIFT_LATCH, OUTPUT);
@@ -48,6 +52,7 @@ void ShiftLamps::clear() {
 
 
 void ShiftLamps::show() {
+	Serial.print(data[1], HEX); Serial.print(" "); Serial.println(data[0], HEX);
 	digitalWrite(SHIFT_LATCH, 0);
 	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[1]);
 	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[0]);

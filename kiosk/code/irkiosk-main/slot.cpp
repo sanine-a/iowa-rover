@@ -6,14 +6,14 @@
 SlotReader::SlotReader(
 	Model& model, unsigned int commandIndex, Scheduler& sch, 
 	Rfid& rfid, byte addr, 
-	ShiftLamps& lamps, ShiftLamp& lamp,
+	ShiftLamp& lamp,
 	SlotButtons& slotButtons
 ) : 
 	Subscriber<SlotButtonEvent>::Subscriber(&slotButtons),
 	Subscriber<RfidEvent>::Subscriber(&rfid), 
 	addr(addr),
 	model(model), commandIndex(commandIndex), sch(sch), 
-	lamps(lamps), lamp(lamp) {}
+	lamp(lamp) {}
 
 
 void SlotReader::on(RfidEvent e) {
@@ -22,11 +22,10 @@ void SlotReader::on(RfidEvent e) {
 	if (category == CATEGORY_UNKNOWN) {
 		// flash lamp twice to indicate unknown tag
 		lamp.turnOn();
-		lamps.show();
 		sch.setTimeout([this]{
-			lamp.turnOff(); lamps.show(); sch.setTimeout([this]{
-				lamp.turnOn(); lamps.show(); sch.setTimeout([this]{
-					lamp.turnOff(); lamps.show();
+			lamp.turnOff(); sch.setTimeout([this]{
+				lamp.turnOn(); sch.setTimeout([this]{
+					lamp.turnOff();
 				}, 500);
 			}, 500);
 		}, 500);
@@ -34,9 +33,8 @@ void SlotReader::on(RfidEvent e) {
 		model.commands[commandIndex].action = category;
 		model.commands[commandIndex].amount = 0.5;
 		lamp.turnOff();
-		lamps.show();
 		sch.setTimeout([this]{
-			lamp.turnOn(); lamps.show();
+			lamp.turnOn();
 		}, 200);
 	}
 }
@@ -56,19 +54,24 @@ void SlotReader::on(SlotButtonEvent e) {
 	if (model.commands[commandIndex].amount > 1) {
 		model.commands[commandIndex].amount  = 1;
 	}
+}
 
-	Serial.print(commandIndex); Serial.print(" amount: "); Serial.println(model.commands[commandIndex].amount);
+
+void SlotReader::update() {
+	if (model.commands[commandIndex].action == Model::Command::Action::NONE) {
+		lamp.turnOff();
+	}
 }
 
 
 SlotButton::SlotButton(
 	Model& model, Publisher<SlotButtonEvent> *publisher,
 	unsigned int slotIndex, SlotButtonEvent::Button buttonType, 
-	unsigned int buttonPin, ShiftLamps& lamps, ShiftLamp& lamp
+	unsigned int buttonPin, ShiftLamp& lamp
 ) : 
 	model(model), publisher(publisher),
 	slotIndex(slotIndex), buttonType(buttonType), 
-	PolledSwitch(buttonPin), lamps(lamps), lamp(lamp)
+	PolledSwitch(buttonPin), lamp(lamp)
 {}
 
 void SlotButton::update() {
@@ -76,9 +79,9 @@ void SlotButton::update() {
 	if (model.commands[slotIndex].action != action) {
 		action = model.commands[slotIndex].action;
 		if (action == Model::Command::Action::NONE) {
-			lamp.turnOff(); lamps.show();
+			lamp.turnOff();
 		} else {
-			lamp.turnOn(); lamps.show();
+			lamp.turnOn();
 		}
 	}
 }
@@ -92,14 +95,14 @@ void SlotButton::onHigh() {}
 
 
 SlotButtons::SlotButtons(Model& model, ShiftLamps& lamps) :
-	inc1(model, this, 0, SlotButtonEvent::Button::PUSH_INCREMENT, UP1_BTN, lamps, lamps.inc1),
-	dec1(model, this, 0, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN1_BTN, lamps, lamps.dec1),
-	inc2(model, this, 1, SlotButtonEvent::Button::PUSH_INCREMENT, UP2_BTN, lamps, lamps.inc2),
-	dec2(model, this, 1, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN2_BTN, lamps, lamps.dec2),
-	inc3(model, this, 2, SlotButtonEvent::Button::PUSH_INCREMENT, UP3_BTN, lamps, lamps.inc3),
-	dec3(model, this, 2, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN3_BTN, lamps, lamps.dec3),
-	inc4(model, this, 3, SlotButtonEvent::Button::PUSH_INCREMENT, UP4_BTN, lamps, lamps.inc4),
-	dec4(model, this, 3, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN4_BTN, lamps, lamps.dec4)
+	inc1(model, this, 0, SlotButtonEvent::Button::PUSH_INCREMENT, UP1_BTN,   lamps.inc1),
+	dec1(model, this, 0, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN1_BTN, lamps.dec1),
+	inc2(model, this, 1, SlotButtonEvent::Button::PUSH_INCREMENT, UP2_BTN,   lamps.inc2),
+	dec2(model, this, 1, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN2_BTN, lamps.dec2),
+	inc3(model, this, 2, SlotButtonEvent::Button::PUSH_INCREMENT, UP3_BTN,   lamps.inc3),
+	dec3(model, this, 2, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN3_BTN, lamps.dec3),
+	inc4(model, this, 3, SlotButtonEvent::Button::PUSH_INCREMENT, UP4_BTN,   lamps.inc4),
+	dec4(model, this, 3, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN4_BTN, lamps.dec4)
 {}
 
 void SlotButtons::update() {

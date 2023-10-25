@@ -29,16 +29,16 @@ class SlotReader : public Subscriber<RfidEvent>, public Subscriber<SlotButtonEve
 	SlotReader(
 		Model& model, unsigned int commandIndex, Scheduler& sch, 
 		Rfid& rfid, byte addr, 
-		ShiftLamps& lamps, ShiftLamp& lamp,
+		ShiftLamp& lamp,
 		SlotButtons& slotButtons
 	);
-	SlotReader(Model& model, Scheduler& sch, Rfid& rfid, ShiftLamps& lamps, ShiftLamp& lamp);
+	SlotReader(Model& model, Scheduler& sch, Rfid& rfid, ShiftLamp& lamp);
 	void on(RfidEvent e);
 	void on(SlotButtonEvent e);
+	void update();
 
 	private:
 	Model& model;
-	ShiftLamps& lamps;
 	ShiftLamp& lamp;
 	Scheduler& sch;
 	byte addr;
@@ -51,7 +51,7 @@ class SlotButton : public PolledSwitch {
 	SlotButton(
 		Model& model, Publisher<SlotButtonEvent> *publisher,
 		unsigned int slotIndex, SlotButtonEvent::Button buttonType, 
-		unsigned int buttonPin, ShiftLamps& lamps, ShiftLamp& lamp
+		unsigned int buttonPin, ShiftLamp& lamp
 	);
 	void update();
 	
@@ -60,7 +60,6 @@ class SlotButton : public PolledSwitch {
 	Publisher<SlotButtonEvent> *publisher;
 	SlotButtonEvent::Button buttonType;
 	unsigned int slotIndex;
-	ShiftLamps& lamps;
 	ShiftLamp& lamp;
 	Model::Command::Action action;
 

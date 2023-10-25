@@ -7,8 +7,8 @@ class ShiftRegisterPin {
 	public:
 	ShiftRegisterPin(byte* root, size_t offset);
 
-	void write1();
-	void write0();
+	bool write1();
+	bool write0();
 
 	private:
 	byte *b;
@@ -16,12 +16,18 @@ class ShiftRegisterPin {
 };
 
 
+struct ShiftLamps;
+
+
 class ShiftLamp : public ShiftRegisterPin {
 	public:
-	ShiftLamp(byte* root, size_t index);
+	ShiftLamp(ShiftLamps* lamps, size_t index);
 
 	void turnOn();
 	void turnOff();
+
+	private:
+	ShiftLamps* lamps;
 };
 
 
