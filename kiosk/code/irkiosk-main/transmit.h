@@ -8,6 +8,11 @@
 #include "radioserial.h"
 #include "scheduler.h"
 
+#define KIOSK_ADDR1 0x11
+#define ROVER_ADDR1 0x12
+#define KIOSK_ADDR2 0x21
+#define ROVER_ADDR2 0x22
+
 typedef enum { TX_PRESS } TxButtonEvent;
 
 class TxButton : public PolledSwitch, public Publisher<TxButtonEvent> {
@@ -25,10 +30,14 @@ class TxButton : public PolledSwitch, public Publisher<TxButtonEvent> {
 
 class Transmitter : public Subscriber<TxButtonEvent>, public RadioSerial {
 	public:
-	Transmitter(Model& model, Publisher<TxButtonEvent> *publisher, Scheduler& sch);
+	Transmitter(Model& model, Publisher<TxButtonEvent> *publisher, Scheduler& sch, ShiftLamp& errLamp, ShiftLamp& runLamp);
 	void on(TxButtonEvent e);
 	void onMessage(const char *key, const char *value);
 	private:
+	Scheduler& sch;
 	Model& model;
+	ShiftLamp &errLamp, &runLamp;
+	bool running;
 	void sendCommand(int index, Model::Command::Action action, float amount);
+	void flashError();
 };

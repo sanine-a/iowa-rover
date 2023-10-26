@@ -5,6 +5,7 @@
 #define SERIAL_CONTROLLER_HPP
 
 
+#include <stdio.h>
 #include <Arduino.h>
 #include <RHReliableDatagram.h>
 #include <RH_RF69.h>
@@ -72,15 +73,18 @@ class RadioSerial {
 	}
 	
 	void set_addrs(byte self, byte partner) {
+		Serial.print("  radio address [self]:    "); Serial.println(self, HEX);
+		Serial.print("  radio address [partner]: "); Serial.println(partner, HEX);
 		radio.setThisAddress(self);
 		partner_addr = partner;
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-	void sendMessage(char* messageKey, char* messageValue) {
+	bool sendMessage(char* messageKey, char* messageValue) {
 		cleanString(messageKey);
 		cleanString(messageValue);
+		Serial.print("  TX: {"); Serial.print(messageKey); Serial.print(":"); Serial.print(messageValue); Serial.println("}");
 		
 		char result[2*MAX_STRING_LEN+3];
 		strcpy(result,"{");
@@ -92,43 +96,47 @@ class RadioSerial {
 		size_t len = strlen(result);
 		if (!radio.sendtoWait((uint8_t*) result, len+1, partner_addr)) {
 			Serial.println("WARNING: radio transmission failed!");
+			return false;
 		}
+		return true;
 	}
 	
-	void sendMessage(char* messageKey, int messageValue) {
+	bool sendMessage(char* messageKey, int messageValue) {
 		char stringValue[MAX_STRING_LEN];
 		snprintf(stringValue, MAX_STRING_LEN, "%d", messageValue);
-		sendMessage(messageKey, stringValue);
+		return sendMessage(messageKey, stringValue);
 	}
 	
-	void sendMessage(char* messageKey, unsigned int messageValue) {
+	bool sendMessage(char* messageKey, unsigned int messageValue) {
 		char stringValue[MAX_STRING_LEN];
 		snprintf(stringValue, MAX_STRING_LEN, "%u", messageValue);
-		sendMessage(messageKey, stringValue);
+		return sendMessage(messageKey, stringValue);
 	}
 	
-	void sendMessage(char* messageKey, long int messageValue) {
+	bool sendMessage(char* messageKey, long int messageValue) {
 		char stringValue[MAX_STRING_LEN];
 		snprintf(stringValue, MAX_STRING_LEN, "%ld", messageValue);
-		sendMessage(messageKey, stringValue);
+		return sendMessage(messageKey, stringValue);
 	}
 	
-	void sendMessage(char* messageKey, long unsigned int messageValue) {
+	bool sendMessage(char* messageKey, long unsigned int messageValue) {
 		char stringValue[MAX_STRING_LEN];
 		snprintf(stringValue, MAX_STRING_LEN, "%lu", messageValue);
-		sendMessage(messageKey, stringValue);
+		return sendMessage(messageKey, stringValue);
 	}
 	
-	void sendMessage(char* messageKey, float messageValue) {
+	bool sendMessage(char* messageKey, float messageValue) {
 		char stringValue[MAX_STRING_LEN];
-		snprintf(stringValue, MAX_STRING_LEN, "%f", messageValue);
-		sendMessage(messageKey, stringValue);
+		//snprintf(stringValue, MAX_STRING_LEN, "%f", messageValue);
+		dtostrf(messageValue, 1, 4, stringValue);
+		Serial.print(messageValue); Serial.print(" "); Serial.println(stringValue);
+		return sendMessage(messageKey, stringValue);
 	}
 
 	void update() {
 		// needed because len only gets set if it is greater than message length!
 		// this makes sense (set len to your buffer size and it will never exceed that)
-		// but it annoyingly undocumented...
+		// but it is annoyingly undocumented...
 		uint8_t len = sizeof(buf);
 		if(radio.recvfromAck(buf, &len)) {
 			for (int i=0; i<len; i++) {

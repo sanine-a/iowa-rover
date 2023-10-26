@@ -52,7 +52,6 @@ void ShiftLamps::clear() {
 
 
 void ShiftLamps::show() {
-	Serial.print(data[1], HEX); Serial.print(" "); Serial.println(data[0], HEX);
 	digitalWrite(SHIFT_LATCH, 0);
 	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[1]);
 	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[0]);

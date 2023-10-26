@@ -37,7 +37,7 @@ void View::update() {
 
 Controller::Controller() : 
 	view(model),
-	radio(model, &(view.txButton), sch),
+	radio(model, &(view.txButton), sch, view.srLamps.error, view.srLamps.running),
 	rfidMonitor(model.tbl, view.rfid),
 	progController(view.progBtns, view.progLeds, view.rfid, model.tbl),
 	slotReader1(model, 0, sch, view.rfid, 0x71, view.srLamps.rfid1, view.slotButtons),
@@ -66,7 +66,7 @@ void Controller::update() {
 	slotReader2.update();
 	slotReader3.update();
 	slotReader4.update();
-	//radio.update();
+	radio.update();
 }
 
 

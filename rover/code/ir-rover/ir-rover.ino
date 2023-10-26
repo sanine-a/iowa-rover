@@ -162,7 +162,6 @@ void setup() {
 	radio.set_addrs(rover_addr, kiosk_addr);
 	serial_printf("using rover address 0x%x\n", rover_addr);
 	serial_printf("expecting transmissions from kiosk address 0x%x\n", kiosk_addr);
-	move_forward(1);
 }
 
 
