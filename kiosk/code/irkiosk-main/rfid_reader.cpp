@@ -89,3 +89,11 @@ void Rfid::update() {
 	rfid3.update();
 	rfid4.update();
 }
+
+
+void Rfid::reset() {
+	Serial.println("RESET RFID");
+	Wire.beginTransmission(0x55);
+	Wire.write(0x00);
+	Wire.endTransmission();
+}

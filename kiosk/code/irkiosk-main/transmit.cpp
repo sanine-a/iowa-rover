@@ -32,10 +32,10 @@ void TxButton::onHigh() {}
 
 Transmitter::Transmitter(
 	Model& model, Publisher<TxButtonEvent> *pub, Scheduler& sch,
-	ShiftLamp& errLamp, ShiftLamp& runLamp
+	ShiftLamp& errLamp, ShiftLamp& runLamp, Rfid& rfid
 ) : 
 	sch(sch), Subscriber(pub), model(model), RadioSerial(RADIO_CS, RADIO_RST, RADIO_INT, 910.0),
-	errLamp(errLamp), runLamp(runLamp),
+	errLamp(errLamp), runLamp(runLamp), rfid(rfid),
 	running(false)
 {
 	pinMode(KIOSK_SELECT, INPUT);
@@ -61,6 +61,7 @@ void Transmitter::on(TxButtonEvent e) {
 	if (!sendMessage("execute", 1)) { flashError(); return; }
 	Serial.println("transmitted!");
 	model.resetCommands();
+	rfid.reset();
 }
 
 

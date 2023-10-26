@@ -7,6 +7,7 @@
 #include "sr_lamp.h"
 #include "radioserial.h"
 #include "scheduler.h"
+#include "rfid_reader.h"
 
 #define KIOSK_ADDR1 0x11
 #define ROVER_ADDR1 0x12
@@ -30,13 +31,14 @@ class TxButton : public PolledSwitch, public Publisher<TxButtonEvent> {
 
 class Transmitter : public Subscriber<TxButtonEvent>, public RadioSerial {
 	public:
-	Transmitter(Model& model, Publisher<TxButtonEvent> *publisher, Scheduler& sch, ShiftLamp& errLamp, ShiftLamp& runLamp);
+	Transmitter(Model& model, Publisher<TxButtonEvent> *publisher, Scheduler& sch, ShiftLamp& errLamp, ShiftLamp& runLamp, Rfid& rfid);
 	void on(TxButtonEvent e);
 	void onMessage(const char *key, const char *value);
 	private:
 	Scheduler& sch;
 	Model& model;
 	ShiftLamp &errLamp, &runLamp;
+	Rfid& rfid;
 	bool running;
 	void sendCommand(int index, Model::Command::Action action, float amount);
 	void flashError();

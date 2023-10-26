@@ -31,6 +31,7 @@ class Rfid : public Publisher<struct RfidEvent> {
 	Rfid();
 	void test();
 	void update();
+	void reset();
 
 	private:
 	RfidReader rfid1, rfid2, rfid3, rfid4, progRfid;
