@@ -71,7 +71,11 @@ void RfidReader::test() {
 
 // --===== Rfid =====--
 
-Rfid::Rfid() : rfid1(this, 0x71), rfid2(this, 0x72), rfid3(this, 0x73), rfid4(this, 0x74), progRfid(this, 0x70) {}
+Rfid::Rfid() : 
+	rfid1(this, 0x71), rfid2(this, 0x72), 
+	rfid3(this, 0x73), rfid4(this, 0x74), 
+	progRfid(this, 0x70), 
+	resetting(false) {}
 
 void Rfid::test() {
 	progRfid.test();
@@ -83,11 +87,14 @@ void Rfid::test() {
 
 
 void Rfid::update() {
-	progRfid.update();
-	rfid1.update();
-	rfid2.update();
-	rfid3.update();
-	rfid4.update();
+	sch.update();
+	if (!resetting) {
+		progRfid.update();
+		rfid1.update();
+		rfid2.update();
+		rfid3.update();
+		rfid4.update();
+	}
 }
 
 
@@ -96,4 +103,6 @@ void Rfid::reset() {
 	Wire.beginTransmission(0x55);
 	Wire.write(0x00);
 	Wire.endTransmission();
+	resetting = true;
+	sch.setTimeout([this]{ resetting = false; }, 100);
 }

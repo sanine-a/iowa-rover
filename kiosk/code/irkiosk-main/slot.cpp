@@ -29,6 +29,8 @@ void SlotReader::on(RfidEvent e) {
 				}, 500);
 			}, 500);
 		}, 500);
+	} else if (model.commands[commandIndex].action == category) {
+		// ignore duplicate scans	
 	} else {
 		model.commands[commandIndex].action = category;
 		model.commands[commandIndex].amount = 0.5;

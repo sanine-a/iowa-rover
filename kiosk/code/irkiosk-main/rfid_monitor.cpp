@@ -21,7 +21,6 @@ RfidPoller::RfidPoller(Model& model, Scheduler& sch, Rfid& rfid)
 
 
 void RfidPoller::startPoll() {
-	Serial.println("  poll> start");
 	rfid.reset();
 	memset(reset, true, sizeof(reset));
 	polling = true;
@@ -34,7 +33,6 @@ void RfidPoller::endPoll() {
 			model.commands[i].action = Model::Command::Action::NONE;
 		}
 	}
-	Serial.println("  poll> end");
 }
 
 
@@ -42,6 +40,6 @@ void RfidPoller::on(RfidEvent e) {
 	if (!polling) { return; }
 	int idx = e.sourceAddr - 0x71;
 	if (idx < 0) { return; }
-	Serial.print("  poll> read on "); Serial.println(idx);
+	if (idx > 3) { return; }
 	reset[idx] = false;
 }

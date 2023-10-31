@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include "Rfid/Tag.h"
 #include "signal.h"
+#include "scheduler.h"
 
 
 struct RfidEvent {
@@ -35,4 +36,6 @@ class Rfid : public Publisher<struct RfidEvent> {
 
 	private:
 	RfidReader rfid1, rfid2, rfid3, rfid4, progRfid;
+	Scheduler sch;
+	bool resetting;
 };

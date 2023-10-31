@@ -61,8 +61,6 @@ void Transmitter::on(TxButtonEvent e) {
 	}
 	if (!sendMessage("execute", 1)) { flashError(); return; }
 	Serial.println("transmitted!");
-	model.resetCommands();
-	rfid.reset();
 }
 
 
