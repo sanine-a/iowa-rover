@@ -59,8 +59,8 @@ Controller::Controller() :
 }
 
 void Controller::update() {
-	view.update();
 	sch.update();
+	view.update();
 	progController.update();
 	slotReader1.update();
 	slotReader2.update();

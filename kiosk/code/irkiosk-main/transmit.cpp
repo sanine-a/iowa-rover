@@ -39,6 +39,7 @@ Transmitter::Transmitter(
 	running(false)
 {
 	pinMode(KIOSK_SELECT, INPUT);
+	Serial.println("schedule tx setup");
 	sch.setTimeout([this]{ 
 		setup(); 
 		if (digitalRead(KIOSK_SELECT)) {
