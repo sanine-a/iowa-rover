@@ -39,6 +39,7 @@ struct Controller {
 	struct Model model;
 
 	RfidMonitor rfidMonitor;
+	RfidPoller rfidPoller;
 	Programmer::Controller progController;
 	SlotReader slotReader1, slotReader2, slotReader3, slotReader4;
 	Transmitter radio;
