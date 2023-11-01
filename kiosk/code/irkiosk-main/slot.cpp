@@ -128,7 +128,7 @@ void SlotBarGraph::update() {
 }
 
 void SlotBarGraph::showAmount(unsigned int amount) {
-	auto color = strip.Color(255, 0, 0);
+	auto color = strip.Color(0x1a, 0x18, 0x00);
 	unsigned int offset = slotIndex * 8;
 	for (int i=0; i<8; i++) {
 		unsigned int px = i + offset;

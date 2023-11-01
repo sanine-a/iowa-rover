@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include "scheduler.h"
 
 
 class ShiftRegisterPin {
@@ -9,6 +10,7 @@ class ShiftRegisterPin {
 
 	bool write1();
 	bool write0();
+	void toggle();
 
 	private:
 	byte *b;
@@ -21,18 +23,22 @@ struct ShiftLamps;
 
 class ShiftLamp : public ShiftRegisterPin {
 	public:
-	ShiftLamp(ShiftLamps* lamps, size_t index);
+	ShiftLamp(Scheduler& sch, ShiftLamps* lamps, size_t index);
 
 	void turnOn();
 	void turnOff();
+	void flash(unsigned int period, unsigned int duration=0);
 
 	private:
+	Scheduler& sch;
+	int flashInterval;
 	ShiftLamps* lamps;
 };
 
 
 struct ShiftLamps {
 	byte data[2];
+	Scheduler sch;
 	
 	ShiftLamp inc1, dec1;
 	ShiftLamp inc2, dec2;
@@ -45,4 +51,5 @@ struct ShiftLamps {
 	ShiftLamps();
 	void clear();
 	void show();
+	void update();
 };

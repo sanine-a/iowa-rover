@@ -31,13 +31,17 @@ class TxButton : public PolledSwitch, public Publisher<TxButtonEvent> {
 
 class Transmitter : public Subscriber<TxButtonEvent>, public RadioSerial {
 	public:
-	Transmitter(Model& model, Publisher<TxButtonEvent> *publisher, Scheduler& sch, ShiftLamp& errLamp, ShiftLamp& runLamp, Rfid& rfid);
+	Transmitter(
+		Model& model, Publisher<TxButtonEvent> *publisher, Scheduler& sch, 
+		ShiftLamp& readyLamp, ShiftLamp& txLamp, ShiftLamp& errLamp, ShiftLamp& runLamp, 
+		Rfid& rfid
+	);
 	void on(TxButtonEvent e);
 	void onMessage(const char *key, const char *value);
 	private:
 	Scheduler& sch;
 	Model& model;
-	ShiftLamp &errLamp, &runLamp;
+	ShiftLamp &readyLamp, &txLamp, &errLamp, &runLamp;
 	Rfid& rfid;
 	bool running;
 	void sendCommand(int index, Model::Command::Action action, float amount);

@@ -24,19 +24,13 @@ View::View(Model& model) :
 {}
 
 void View::update() {
-	Serial.println("view> 1");
 	progBtns.update();
-	Serial.println("view> 2");
 	progLeds.update();
-	Serial.println("view> 3");
 	rfid.update();
-	Serial.println("view> 4");
 	slotButtons.update();
-	Serial.println("view> 5");
 	slotBarGraphs.update();
-	Serial.println("view> 6");
 	txButton.update();
-	Serial.println("view> 7");
+	srLamps.update();
 }
 
 
@@ -44,7 +38,11 @@ void View::update() {
 
 Controller::Controller() : 
 	view(model),
-	radio(model, &(view.txButton), sch, view.srLamps.error, view.srLamps.running, view.rfid),
+	radio(
+		model, &(view.txButton), sch, 
+		view.srLamps.ready, view.srLamps.txBtn, view.srLamps.error, view.srLamps.running, 
+		view.rfid
+	),
 	rfidMonitor(model.tbl, view.rfid),
 	rfidPoller(model, sch, view.rfid),
 	progController(view.progBtns, view.progLeds, view.rfid, model.tbl),
@@ -67,23 +65,14 @@ Controller::Controller() :
 }
 
 void Controller::update() {
-	Serial.println("mvc> 1");
 	sch.update();
-	Serial.println("mvc> 2");
 	view.update();
-	Serial.println("mvc> 3");
 	progController.update();
-	Serial.println("mvc> 4");
 	slotReader1.update();
-	Serial.println("mvc> 5");
 	slotReader2.update();
-	Serial.println("mvc> 6");
 	slotReader3.update();
-	Serial.println("mvc> 7");
 	slotReader4.update();
-	Serial.println("mvc> 8");
 	radio.update();
-	Serial.println("mvc> 9");
 }
 
 

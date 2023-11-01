@@ -32,10 +32,11 @@ void TxButton::onHigh() {}
 
 Transmitter::Transmitter(
 	Model& model, Publisher<TxButtonEvent> *pub, Scheduler& sch,
-	ShiftLamp& errLamp, ShiftLamp& runLamp, Rfid& rfid
+	ShiftLamp& readyLamp, ShiftLamp& txLamp, ShiftLamp& errLamp, ShiftLamp& runLamp, 
+	Rfid& rfid
 ) : 
 	sch(sch), Subscriber(pub), model(model), RadioSerial(RADIO_CS, RADIO_RST, RADIO_INT, 910.0),
-	errLamp(errLamp), runLamp(runLamp), rfid(rfid),
+	readyLamp(readyLamp), txLamp(txLamp), errLamp(errLamp), runLamp(runLamp), rfid(rfid),
 	running(false)
 {
 	pinMode(KIOSK_SELECT, INPUT);
@@ -47,30 +48,48 @@ Transmitter::Transmitter(
 		} else {
 			set_addrs(KIOSK_ADDR2, ROVER_ADDR2);
 		}
+		this->readyLamp.turnOn();
 	}, 0);
 }
 
 
 void Transmitter::on(TxButtonEvent e) {
 	if (running) { return; } // do nothing while the rover is already running
+	readyLamp.turnOff();
+	errLamp.turnOff();
+	txLamp.turnOff();
 	Serial.println("transmitting!");
+	int idx = 0;
 	for (int i=0; i<4; i++) {
 		if (model.commands[i].action != Model::Command::Action::NONE) {
-			sendCommand(i, model.commands[i].action, model.commands[i].amount);
+			sendCommand(idx, model.commands[i].action, model.commands[i].amount);
+			idx += 1;
 		}
 	}
+	txLamp.turnOn();
 	if (!sendMessage("execute", 1)) { flashError(); return; }
+	delay(150);
+	txLamp.turnOff();
 	Serial.println("transmitted!");
 }
 
 
 void Transmitter::sendCommand(int index, Model::Command::Action action, float amount) {
+	txLamp.turnOn();
 	if (!sendMessage("command", index)) { flashError(); return; }
-	delay(300);
+	delay(150);
+	txLamp.turnOff();
+	delay(150);
+	txLamp.turnOn();
 	if (!sendMessage("action", action)) { flashError(); return; }
-	delay(300);
+	delay(150);
+	txLamp.turnOff();
+	delay(150);
+	txLamp.turnOn();
 	if (!sendMessage("amount", amount)) { flashError(); return; }
-	delay(300);
+	delay(150);
+	txLamp.turnOff();
+	delay(150);
 }
 
 
@@ -81,9 +100,16 @@ void Transmitter::onMessage(const char *key, const char *value) {
 		if (!ready) {
 			running = true;
 			runLamp.turnOn();
+			sch.setTimeout([this]{
+				// force time out if we miss the end response
+				running = false;
+				runLamp.turnOff();
+				readyLamp.turnOn();
+			}, 30 * 1000);
 		} else {
 			running = false;
 			runLamp.turnOff();
+			readyLamp.turnOn();
 		}
 	}
 }
@@ -91,5 +117,4 @@ void Transmitter::onMessage(const char *key, const char *value) {
 
 void Transmitter::flashError() {
 	errLamp.turnOn();
-	sch.setTimeout([this]{ errLamp.turnOff(); }, 2000);
 }
