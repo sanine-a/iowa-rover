@@ -10,8 +10,8 @@
 #include <RH_RF69.h>
 #include <SPI.h>
 
-#define MAX_STRING_LEN RH_RF69_MAX_MESSAGE_LEN - 3
-#define MAX_RETRIES 3
+#define MAX_STRING_LEN 64
+#define MAX_RETRIES 3 
 #define TX_POWER 18
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,7 +46,11 @@ class RadioSerial {
 	public:
 	RadioSerial(
 		byte pin_cs, byte pin_rst, byte pin_int, float freq)
-	: state(WAIT_FOR_START), pin_rst(pin_rst), driver(pin_cs, pin_int), freq(freq), radio(driver, 0) {}
+	: state(WAIT_FOR_START), pin_rst(pin_rst), driver(pin_cs, pin_int), freq(freq), radio(driver, 0) {
+		memset(key, 0, sizeof(key));
+		memset(value, 0, sizeof(value));
+		memset(buf, 0, sizeof(buf));
+	}
 
 	void setup() {
 		// reset radio
@@ -68,7 +72,7 @@ class RadioSerial {
 		Serial.println("  set frequency & power");
 		driver.setFrequency(freq);
 		driver.setTxPower(TX_POWER, true);
-		radio.setRetries(MAX_RETRIES);
+		this->radio.setRetries(MAX_RETRIES);
 	}
 	
 	void set_addrs(byte self, byte partner) {
@@ -131,9 +135,12 @@ class RadioSerial {
 		// but it annoyingly undocumented...
 		uint8_t len = sizeof(buf);
 		if(radio.recvfromAck(buf, &len)) {
+			Serial.println(len);
 			for (int i=0; i<len; i++) {
 				char c = (char) buf[i];
+				Serial.print(i); Serial.print(" "); Serial.println(c);
 				eatChar(c);
+				Serial.println("_");
 			}
 		}
 	}
