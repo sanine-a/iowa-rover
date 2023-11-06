@@ -16,6 +16,7 @@ void RfidMonitor::on(RfidEvent e) {
 
 RfidPoller::RfidPoller(Model& model, Scheduler& sch, Rfid& rfid)
 : model(model), sch(sch), rfid(rfid), Subscriber(&rfid) {
+	memset(resetTimeout, 0, sizeof(resetTimeout));
 	sch.setInterval([this]{ startPoll(); }, 1000);
 }
 
@@ -31,15 +32,22 @@ void RfidPoller::endPoll() {
 	for (int i=0; i<4; i++) {
 		if (reset[i]) {
 			model.commands[i].action = Model::Command::Action::NONE;
+			resetTimeout[i] = sch.setTimeout([this, i]{
+				model.commands[i].amount = 0.5;
+			}, 2000);
 		}
 	}
 }
 
 
 void RfidPoller::on(RfidEvent e) {
-	if (!polling) { return; }
 	int idx = e.sourceAddr - 0x71;
 	if (idx < 0) { return; }
 	if (idx > 3) { return; }
-	reset[idx] = false;
+
+	sch.clearTimeout(resetTimeout[idx]);
+
+	if (polling) { 
+		reset[idx] = false;
+	}
 }

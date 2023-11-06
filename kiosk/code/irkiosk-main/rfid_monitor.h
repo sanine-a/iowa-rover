@@ -25,6 +25,7 @@ class RfidPoller : public Subscriber<RfidEvent> {
 	Rfid& rfid;
 	bool polling;
 	bool reset[4];
+	unsigned int resetTimeout[4];
 	void startPoll();
 	void endPoll();
 };

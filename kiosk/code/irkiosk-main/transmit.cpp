@@ -53,22 +53,41 @@ Transmitter::Transmitter(
 }
 
 
+char command_char(Model::Command::Action a) {
+	switch(a) {
+	case Model::Command::Action::FORWARD:  return 'F';
+	case Model::Command::Action::BACKWARD: return 'B';
+	case Model::Command::Action::LEFT:     return 'L';
+	case Model::Command::Action::RIGHT:    return 'R';
+	case Model::Command::Action::NONE:     return 'N';
+	default: return 'N';
+	}
+}
+
+int command_amount(float amt) {
+	return round(8.0 * amt);
+}
+
+
 void Transmitter::on(TxButtonEvent e) {
 	if (running) { return; } // do nothing while the rover is already running
 	readyLamp.turnOff();
 	errLamp.turnOff();
-	txLamp.turnOff();
-	Serial.println("transmitting!");
-	int idx = 0;
-	for (int i=0; i<4; i++) {
-		if (model.commands[i].action != Model::Command::Action::NONE) {
-			sendCommand(idx, model.commands[i].action, model.commands[i].amount);
-			idx += 1;
-		}
-	}
 	txLamp.turnOn();
-	if (!sendMessage("execute", 1)) { flashError(); return; }
-	delay(150);
+	Serial.println("transmitting!");
+	char buf[16];
+	snprintf(
+		buf, sizeof(buf), "%c%d%c%d%c%d%c%d",
+		command_char(model.commands[0].action),
+		command_amount(model.commands[0].amount),
+		command_char(model.commands[1].action),
+		command_amount(model.commands[1].amount),
+		command_char(model.commands[2].action),
+		command_amount(model.commands[2].amount),
+		command_char(model.commands[3].action),
+		command_amount(model.commands[3].amount)
+	);
+	sendMessage("execute", buf);
 	txLamp.turnOff();
 	Serial.println("transmitted!");
 }
