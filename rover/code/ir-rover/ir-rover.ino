@@ -5,6 +5,8 @@
 #include "motor.h"
 #include "pins.h"
 
+
+// radio constants
 #define RADIO_FREQ 910.0
 
 #define KIOSK1_ADDR 0x11
@@ -14,6 +16,15 @@
 int rover_addr, kiosk_addr;
 
 
+// movement constants
+#define MOVE_TIME 4000
+#define MOVE_SPEED 1.0
+#define TURN_TIME_MAX 3000
+#define TURN_SPEED 0.75
+#define PAUSE_TIME 500
+#define POT_MAX ((2*1024)/3)
+
+
 #define MOTOR_SPEED 1.0
 Motor left_wheel (AIN1, AIN2, PWMA, MOTOR_SPEED);
 Motor right_wheel(BIN1, BIN2, PWMB, MOTOR_SPEED);
@@ -21,26 +32,24 @@ Motor right_wheel(BIN1, BIN2, PWMB, MOTOR_SPEED);
 
 // motor movements
 void drive(int direction, float amount) {
-	left_wheel.setSpeed(direction * 1.0);
-	right_wheel.setSpeed(direction * 1.0);
-	delay(8000 * amount);
+	left_wheel.setSpeed(direction * MOVE_SPEED);
+	right_wheel.setSpeed(direction * MOVE_SPEED);
+	delay(MOVE_TIME * amount);
 }
+double turn_adjust = 0.5;
 void move_forward(float amount) { drive(1, amount); }
 void move_backward(float amount) { drive(-1, amount); }
+
 void turn(int direction, float amount) {
-	left_wheel.setSpeed(direction * 0.5);
-	right_wheel.setSpeed(direction * -0.5);
-	delay(3850 * amount);
+	left_wheel.setSpeed(direction * TURN_SPEED);
+	right_wheel.setSpeed(direction * -TURN_SPEED);
+	delay(turn_adjust * TURN_TIME_MAX * amount);
 }
 void turn_left(float amount) { turn(-1, amount); }
 void turn_right(float amount) { turn(1, amount); }
-void pause() { 
-	left_wheel.setSpeed(0);
-	right_wheel.setSpeed(0);
-	delay(500);
-}
 
 
+// movement commands
 struct command_t {
 	typedef enum {
 		MOVE_FORWARD,
@@ -52,6 +61,7 @@ struct command_t {
 	action_t action;
 	float amount;
 
+	// helper function for command_t::print()
 	static char action_str(action_t a) {
 		switch(a) {
 		case action_t::MOVE_FORWARD: return 'F';
@@ -63,6 +73,7 @@ struct command_t {
 		}
 	}
 
+	// print the command's action and amount to serial
 	void print() {
 		Serial.print("[");
 		Serial.print(action_str(action)); Serial.print(":"); Serial.print(amount);
@@ -71,48 +82,52 @@ struct command_t {
 };
 
 
+// radio communications
 class Radio : public RadioSerial {
 	public:
 	Radio() : RadioSerial(RADIO_CS, RADIO_RST, RADIO_INT, RADIO_FREQ) {}
+
+	// process incoming messages
 	void onMessage(const char *key, const char *value) {
 		Serial.print(" > "); Serial.print(key); Serial.print(":"); Serial.println(value);
+
+		// if the key is "execute"...
 		if (strcmp(key, "execute") == 0) {
-		char buf[16];
-		snprintf(buf, sizeof(buf), "%p", commands);
-		Serial.println(buf);
-
-			sendMessage("ready", 0);
-			parse_commands(value);
-		Serial.println("c:");
-		snprintf(buf, sizeof(buf), "%p", commands);
-		Serial.println(buf);
-
-			execute();
-			sendMessage("ready", 1);
+			sendMessage("ready", 0); // tell the kiosk we are busy
+			parse_commands(value);   // determine the command sequence we should run
+			execute();               // run the commands
+			sendMessage("ready", 1); // tell the kiosk we are no longer busy
 			return;
 		}
 
+		// for all other messages, tell the kiosk we don't know what to do with it
 		sendMessage("unknown-command", 1);
 	}
 
 
+	// determine command sequence from a sequence of characters and store in the commands[] array
+	// ex: F1B2L3R4 -> (forward 0.125) (backward 0.25) (turn left 3.75) (turn right 0.5)
 	bool parse_commands(const char *commands_buf) {
-		Serial.println(commands_buf);
+		// stack vars to hold our computation
 		char actions[] = { 'N', 'N', 'N', 'N' };
 		uint8_t amounts[] = { 4, 4, 4, 4 };
+
+		// check if command_buf is the right length
 		if (strlen(commands_buf) != 8) {
 			Serial.print("WARNING: malformed command buffer: "); Serial.println(commands_buf);
 			return false;
 		}
+
+		// iterate over the buffer
 		for (int i=0; i<4; i++) {
-			char buf[2]; buf[1] = 0;
+			char buf[2]; buf[1] = 0;  // helper string for atoi() conversions
 			const int idx = 2*i;
-			actions[i] = commands_buf[idx];
+			actions[i] = commands_buf[idx]; // set the command character
 			*buf = commands_buf[idx+1];
-			Serial.print(idx+1); Serial.print(" "); Serial.println(buf);
-			amounts[i] = atoi(buf);
+			amounts[i] = atoi(buf);         // set the command amount
 		}
 
+		// fill in commands[] array
 		for (int i=0; i<4; i++) {
 			Serial.print(actions[i]); Serial.print(" "); Serial.println(amounts[i]);
 			switch(actions[i]) {
@@ -123,15 +138,12 @@ class Radio : public RadioSerial {
 				case 'N': commands[i].action = command_t::action_t::NONE; break;
 				default: commands[i].action = command_t::action_t::NONE; break;
 			}
-			commands[i].amount = ((float)amounts[i])/8.0;
+			commands[i].amount = ((float)amounts[i])/8.0;  // convert integer in range [0-8] to float in range [0-1]
 		}
-		dump_commands();
-		char buf[16];
-		snprintf(buf, sizeof(buf), "%p", commands);
-		Serial.println(buf);
 		return true;
 	}
 
+	// print the current contents of the commands[] array
 	void dump_commands() {
 		for (int i=0; i<4; i++) {
 			commands[i].print(); Serial.println();
@@ -142,14 +154,24 @@ class Radio : public RadioSerial {
 	protected:
 	struct command_t commands[4];
 
+	// execute a single command
 	void execute_command(struct command_t cmd) {
-		if (cmd.amount == 0) {
-			left_wheel.setSpeed(0);
-			right_wheel.setSpeed(0);
-			delay(500);
+		// do nothing for NONE actions
+		if (cmd.action == command_t::action_t::NONE) {
 			return;
 		}
 
+		// pause for actions with zero amount
+		if (cmd.amount == 0) {
+			// stop moving
+			left_wheel.setSpeed(0);
+			right_wheel.setSpeed(0);
+			// pause
+			delay(PAUSE_TIME);
+			return;
+		}
+
+		// perform movements
 		switch(cmd.action) {
 		case command_t::action_t::MOVE_FORWARD:
 			move_forward(cmd.amount);
@@ -169,17 +191,18 @@ class Radio : public RadioSerial {
 		}
 	}
 
+	// sequentially execute the commands[] array
 	void execute() {
 		dump_commands();
 		for (int i=0; i<4; i++) {
 			Serial.print(i); Serial.print(" "); commands[i].print(); Serial.println();
 			execute_command(commands[i]);
-			delay(500);
 		}
+		// need to stop at the end
 		left_wheel.setSpeed(0);
 		right_wheel.setSpeed(0);
 	}
-} radio;
+} radio; // create our global radio object
 
 
 
@@ -191,13 +214,11 @@ void setup() {
 	Serial.println("===== boot =====");
 	Serial.println(sizeof(Radio));
 
-	radio.parse_commands("B1F1B1F1");
-
 	Serial.println("configuring radio...");
 	radio.setup();
-	Serial.println("done!"); delay(1000);
+	Serial.println("done!");
 
-	// choose address
+	// choose address based on kiosk select switch
 	pinMode(KIOSK_SELECT, INPUT_PULLUP);
 	if (!digitalRead(KIOSK_SELECT)) {
 		rover_addr = ROVER1_ADDR;
@@ -209,9 +230,14 @@ void setup() {
 	radio.set_addrs(rover_addr, kiosk_addr);
 	Serial.print("using rover address 0x"); Serial.println(rover_addr, HEX);
 	Serial.print("expecting transmissions from kiosk address 0x"); Serial.println(kiosk_addr, HEX);
+
+	// determine turn adjust from the trimpot
+	long pot = analogRead(TRIMPOT);
+	turn_adjust = ((float)pot)/POT_MAX;
 }
 
 
 void loop() {
+	// poll for incoming transmissions
 	radio.update();
 }
