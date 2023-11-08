@@ -20,6 +20,8 @@
 #include "transmit.h"
 
 
+// struct to hold and manage "view" components
+// a view is essentially anything that the user can interact with (LEDs, buttons, RFID readers, etc)
 struct View {
 	Programmer::Buttons progBtns;
 	Programmer::Leds progLeds;
@@ -33,6 +35,9 @@ struct View {
 	void update();
 };
 
+// struct to hold and manage "controller" components
+// controllers read from the Model and "view" components, and update both as appropriate
+// they are where behavior lives
 struct Controller {
 	Scheduler sch;
 	struct View view;

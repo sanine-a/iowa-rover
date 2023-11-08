@@ -8,6 +8,7 @@
 
 namespace Programmer {
 
+// published type for button events
 struct ButtonState {
 	typedef enum {
 		PRESS, RELEASE, HOLD,
@@ -20,6 +21,7 @@ struct ButtonState {
 class Buttons;
 
 
+// individual button class
 class Btn : public PolledSwitch {
 	public:
 	Btn(int pin, Buttons& pub, ButtonState::S& state);
@@ -31,6 +33,8 @@ class Btn : public PolledSwitch {
 	void onHigh();
 };
 
+// class to manage all buttons & publish button events
+// the individual Btn objects actually do the publishing
 class Buttons : public Publisher<ButtonState> {
 	public:
 	friend class Btn;

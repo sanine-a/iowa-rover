@@ -1,5 +1,6 @@
 #pragma once
 
+// included so that we also get CATEGORY_UNKNOWN
 #include "Rfid/HashTable.h"
 
 #define CATEGORY_FORWARD  0
