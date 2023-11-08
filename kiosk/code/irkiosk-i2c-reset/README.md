@@ -8,7 +8,8 @@ on devices further down the bus for 20 ms. It doesn't do anything else.
 
 The simplest way to load this sketch onto and ATTiny85 is to use another Arduino as programmer. To do so,
 burn the `Examples > 11.ArduinoISP > ArduinoISP` sketch onto your Arduino. Then connect your Arduino's
-5V, GND, MISO, MOSI, and SCK pins to the matching pins on the ATTiny85.
+5V, GND, MISO, MOSI, and SCK pins to the matching pins on the ATTiny85, and connect pin 10 to the RESET on the ATTiny85.
+On an Arduino Uno (like the Metro Mini) MISO is pin 11, MOSI is pin 12, and SCK is pin 13.
 
 ![ATTiny85 pinout. Connect 5V to pin 8, GND to 4, MISO to 6, MOSI to 5, and SCK to 7.](attiny85-pinout.png)
 
