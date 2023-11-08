@@ -7,6 +7,7 @@
 
 RfidReader::RfidReader(Publisher<struct RfidEvent> *publisher, byte addr) : publisher(publisher), addr(addr) {}
 
+// clear the last scanned tag on the RFID module
 void RfidReader::clearTag() {
 	Wire.beginTransmission(addr);
 	Wire.write(CMD_CLEAR_TAG);
@@ -14,6 +15,7 @@ void RfidReader::clearTag() {
 }
 
 
+// load the last scanned tag from the RFID module
 bool RfidReader::loadTag(RfidTag& tag) {
 	Wire.requestFrom(addr, 6);
 	for (int i=0; i<5; i++) {
@@ -28,7 +30,7 @@ bool RfidReader::loadTag(RfidTag& tag) {
 }
 
 
-
+// load the last scanned tag from the RFID module, ignoring if it is empty (i.e. all 0xff)
 bool RfidReader::loadNonEmptyTag(RfidTag& tag, unsigned int max_retries) {
 	for (int i=0; i<max_retries; i++) {
 		if (loadTag(tag)) {
@@ -41,6 +43,7 @@ bool RfidReader::loadNonEmptyTag(RfidTag& tag, unsigned int max_retries) {
 }
 
 
+// scan for a new tag
 void RfidReader::update() {
 	RfidTag tag;
 	struct RfidEvent e;
@@ -53,6 +56,7 @@ void RfidReader::update() {
 }
 
 
+// test if a reader is working correctly
 void RfidReader::test() {
 	RfidTag tag;
 	Serial.print("reader 0x"); Serial.print(addr, HEX);
@@ -86,9 +90,10 @@ void Rfid::test() {
 }
 
 
+// scan all of the RFID modules
 void Rfid::update() {
 	sch.update();
-	if (!resetting) {
+	if (!resetting) { // trying to read from the modules can cause a crash if they are still rebooting
 		progRfid.update();
 		rfid1.update();
 		rfid2.update();
@@ -98,6 +103,7 @@ void Rfid::update() {
 }
 
 
+// reboot the RFID modules
 void Rfid::reset() {
 	Serial.println("RESET RFID");
 	Wire.beginTransmission(0x55);

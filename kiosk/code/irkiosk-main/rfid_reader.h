@@ -6,12 +6,14 @@
 #include "scheduler.h"
 
 
+// type for RFID events
 struct RfidEvent {
 	byte sourceAddr;
 	RfidTag tag;
 };
 
 
+// single RFID module manager
 class RfidReader {
 	public:
 	RfidReader(Publisher<struct RfidEvent> *publisher, byte addr);
@@ -27,6 +29,7 @@ class RfidReader {
 };
 
 
+// class to store all RFID modules
 class Rfid : public Publisher<struct RfidEvent> {
 	public:
 	Rfid();

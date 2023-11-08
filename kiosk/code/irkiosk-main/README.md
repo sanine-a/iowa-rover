@@ -4,6 +4,17 @@ The main sketch for the rover control kiosk.
 
 ## functional description
 
+This program uses the MVC pattern. 
+
+There is one Model, which stores the state of the kiosk. It manages both the EEPROM hash table (where tag data is stored) and
+and array of structs that store the current command sequence.
+
+View components correspond to anything a user can interact with -- buttons, lights,
+RFID readers, etc. Views may read from but not write to the model, and they both drive and are driven by the Controller components.
+
+Controllers are where behavior lives. Controller components read from and write to both the Model and the View components.
+
+
 ### programming board
 
 The programing board carries a single RFID reader, and several buttons with LEDs above them. When an RFID tag is scanned
@@ -26,7 +37,6 @@ stored in a global `model` object for reading by other components.
 When at least one command is selected, the transmission button lights up and becomes active. When it is pressed, the commands
 are strung together into a string like "F4B4L2R8", where the letter represents the command type (e.g. F is forward, L is left, etc) and the number represents the amount from 0 to 8. The program then attempts to transmit this as an `{execute:[string]}` command.
 If it succeeds, the READY lamp turns off and the RUNNING lamp turns on upon receiving a return `{ready:0}` message, and the transmit button becomes inactive. When the radio receives a `{ready:1}` message back from the rover, or if 30 seconds have passed, the RUNNING lamp turns off, the READY lamp turns on, and the transmit button becomes active again. However, if the transmission fails, the ERROR lamp turns on until the next time a tranmission is attempted.
-
 
 ## files
 

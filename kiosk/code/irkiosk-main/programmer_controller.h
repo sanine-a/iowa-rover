@@ -10,6 +10,8 @@
 
 namespace Programmer {
 
+// controller for the programmer board
+// subscribes to programmer button events and RFID events
 class Controller : public Subscriber<ButtonState>, public Subscriber<struct RfidEvent> {
 	public:
 	Controller(Buttons &buttons, Leds &leds, Rfid &rfid, HashTable& tbl);

@@ -3,6 +3,7 @@
 #include "slot.h"
 #include "pins.h"
 
+// manage a single slot
 SlotReader::SlotReader(
 	Model& model, unsigned int commandIndex, Scheduler& sch, 
 	Rfid& rfid, byte addr, 
@@ -16,6 +17,7 @@ SlotReader::SlotReader(
 	lamp(lamp) {}
 
 
+// update the slot command from RFID scans
 void SlotReader::on(RfidEvent e) {
 	if (e.sourceAddr != addr) { return; } // ignore messages not from the address we are interested in
 	byte category = model.tbl.findTag(e.tag);
@@ -33,6 +35,7 @@ void SlotReader::on(RfidEvent e) {
 		// ignore duplicate scans	
 		lamp.turnOn();
 	} else {
+		// briefly turn lamp off and then stay on to indicate the tag was scanned successfully
 		model.commands[commandIndex].action = category;
 		lamp.turnOff();
 		sch.setTimeout([this]{
@@ -42,6 +45,7 @@ void SlotReader::on(RfidEvent e) {
 }
 
 
+// update the slot amount from SlotButtonEvents
 void SlotReader::on(SlotButtonEvent e) {
 	if (e.sourceSlot != commandIndex) { return; }
 	if (e.btn == SlotButtonEvent::Button::PUSH_INCREMENT) {
@@ -59,6 +63,7 @@ void SlotReader::on(SlotButtonEvent e) {
 }
 
 
+// check if the lamp should turn off
 void SlotReader::update() {
 	if (model.commands[commandIndex].action == Model::Command::Action::NONE) {
 		lamp.turnOff();
@@ -76,6 +81,7 @@ SlotButton::SlotButton(
 	PolledSwitch(buttonPin), lamp(lamp)
 {}
 
+// poll the slot button
 void SlotButton::update() {
 	PolledSwitch::update();
 	if (model.commands[slotIndex].action != action) {
@@ -88,6 +94,7 @@ void SlotButton::update() {
 	}
 }
 
+// cause the container SlotButtons struct to publish a SlotButtonEvent
 void SlotButton::onLow() {
 	if (action == Model::Command::Action::NONE) { return; } // ignore presses when the action is NONE
 	struct SlotButtonEvent event = { slotIndex, buttonType };
@@ -107,6 +114,7 @@ SlotButtons::SlotButtons(Model& model, ShiftLamps& lamps) :
 	dec4(model, this, 3, SlotButtonEvent::Button::PUSH_DECREMENT, DOWN4_BTN, lamps.dec4)
 {}
 
+// poll each SlotButton
 void SlotButtons::update() {
 	inc1.update(); dec1.update();
 	inc2.update(); dec2.update();
@@ -119,6 +127,7 @@ SlotBarGraph::SlotBarGraph(Model& model, unsigned int slotIndex, Adafruit_NeoPix
 	model(model), slotIndex(slotIndex), strip(strip) {}
 
 
+// display the current command amount on the bar graph
 void SlotBarGraph::update() {
 	if (model.commands[slotIndex].action == Model::Command::Action::NONE) { 
 		showAmount(0);
@@ -127,6 +136,7 @@ void SlotBarGraph::update() {
 	}
 }
 
+// display [amount] on the bar graph
 void SlotBarGraph::showAmount(unsigned int amount) {
 	auto color = strip.Color(0x1a, 0x18, 0x00);
 	unsigned int offset = slotIndex * 8;
@@ -140,6 +150,7 @@ void SlotBarGraph::showAmount(unsigned int amount) {
 	}
 }
 
+// clear a bar graph
 void SlotBarGraph::clear() {
 	showAmount(0);
 }
@@ -157,6 +168,7 @@ SlotBarGraphs::SlotBarGraphs(Model& model) :
 }
 
 
+// update each bar graph
 void SlotBarGraphs::update() {
 	bar1.update();
 	bar2.update();

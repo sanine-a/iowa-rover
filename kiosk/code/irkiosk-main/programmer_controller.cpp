@@ -32,6 +32,7 @@ char s2char(ButtonState::S s) {
 	return '?';
 }
 
+// store the most recently scanned tag in the EEPROM hash table
 void Controller::train(uint8_t category) {
 	if (!training) { return; }
 	training = false;
@@ -40,6 +41,7 @@ void Controller::train(uint8_t category) {
 }
 
 
+// process button events
 void Controller::on(ButtonState state) {
 	Serial.print("[ ");
 	Serial.print(s2char(state.forward));  Serial.print(", ");
@@ -71,15 +73,20 @@ void Controller::on(ButtonState state) {
 }
 
 
+// process RFID events
 void Controller::on(struct RfidEvent e) {
+	// ignore scans from anything other than the programmer reader
 	if (e.sourceAddr != 0x70) { return; }
 	tag = e.tag;
 
+	// load the tag category from the EEPROM hash table
 	uint8_t category = tbl.findTag(e.tag);
 	if (category == CATEGORY_UNKNOWN) {
+		// unknown tag, switch to training mode
 		training = true;
 		leds.flashAll();
 	} else {
+		// illuminate the matching category led
 		leds.clearAll();
 		switch (category) {
 		case CATEGORY_FORWARD:
@@ -109,11 +116,13 @@ void Controller::on(struct RfidEvent e) {
 }
 
 
+// update
 void Controller::update() {
 	sch.update();
 }
 
 
+// clear the EEPROM hash table
 void Controller::initiateReset() {
 	resetting = true;
 	resetTimeout = sch.setTimeout([this]{

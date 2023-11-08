@@ -19,6 +19,7 @@ class Leds {
 		for (int i=0; i<4; i++) { intervals[i] = -1; }
 	}
 
+	// light/flash/clear functions
 	void lightForward()  { setFlashing(0, false); digitalWrite(PROG_LED1, 1); }
 	void flashForward()  { setFlashing(0, true); }
 	void clearForward()  { setFlashing(0, false); digitalWrite(PROG_LED1, 0); }
@@ -46,6 +47,7 @@ class Leds {
 		for (int i=0; i<4; i++) { setFlashing(i, true); }
 	}
 
+	// needed to update the internal scheduler
 	void update() {
 		sch.update();
 	}
@@ -54,10 +56,13 @@ class Leds {
 	Scheduler sch;
 	int intervals[4];
 
+	// set whether a given LED is flashing
 	void setFlashing(int index, bool flashing) {
 		if (!flashing) {
+			// clear the associated flashing interval
 			sch.clearInterval(intervals[index]);
 		} else {
+			// set a new flashing interval
 			switch(index) {
 			case 0:
 				intervals[0] = 
