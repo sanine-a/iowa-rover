@@ -72,8 +72,8 @@ int command_amount(float amt) {
 void Transmitter::on(TxButtonEvent e) {
 	if (running) { return; } // do nothing while the rover is already running
 	readyLamp.turnOff();
+	txLamp.turnOff();
 	errLamp.turnOff();
-	txLamp.turnOn();
 	Serial.println("transmitting!");
 	char buf[16];
 	snprintf(
@@ -87,8 +87,7 @@ void Transmitter::on(TxButtonEvent e) {
 		command_char(model.commands[3].action),
 		command_amount(model.commands[3].amount)
 	);
-	sendMessage("execute", buf);
-	txLamp.turnOff();
+	if (!sendMessage("execute", buf)) { flashError(); }
 	Serial.println("transmitted!");
 }
 
