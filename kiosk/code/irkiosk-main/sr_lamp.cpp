@@ -8,19 +8,23 @@
 ShiftRegisterPin::ShiftRegisterPin(byte* root, size_t offset)
 : b(root + OFFSET_BYTE(offset)), pos(OFFSET_BIT(offset)) {}
 
+// set the managed bit to 1
+// returns true if the bit flipped, and false otherwise
 bool ShiftRegisterPin::write1() {
 	byte old = *b;
 	*b |= 1 << pos;
 	return old != *b;
 }
 
+// set the managed bit to 0
+// returns true if the bit flipped, and false otherwise
 bool ShiftRegisterPin::write0() {
 	byte old = *b;
 	*b &= ~(1 << pos);
 	return old != *b;
 }
 
-
+// flips the managed bit
 void ShiftRegisterPin::toggle() {
 	*b ^= 1 << pos;
 }
@@ -28,14 +32,20 @@ void ShiftRegisterPin::toggle() {
 
 ShiftLamp::ShiftLamp(Scheduler& sch, ShiftLamps* lamps, size_t index) 
 : sch(sch), lamps(lamps), ShiftRegisterPin(lamps->data, index) {}
+
+// turn the lamp on
 void ShiftLamp::turnOn() { 
 	sch.clearInterval(flashInterval);
 	if (write1()) { lamps->show(); } 
 }
+// turn the lamp off
 void ShiftLamp::turnOff() { 
 	sch.clearInterval(flashInterval);
 	if (write0()) { lamps->show(); } 
 }
+// set the lamp to flash
+// period is the length of the 50% duty cycle flashing
+// duration is the length of time to flash for. if duration is zero, flash forever
 void ShiftLamp::flash(unsigned int period, unsigned int duration) {
 	sch.clearInterval(flashInterval);
 	flashInterval = sch.setInterval([this] {
@@ -68,11 +78,13 @@ running(sch, this, 14), txBtn(sch, this, 15) {
 }
 
 
+// clear all lamps
 void ShiftLamps::clear() {
 	memset(data, 0, sizeof(data));
 }
 
 
+// shift out the lamps
 void ShiftLamps::show() {
 	digitalWrite(SHIFT_LATCH, 0);
 	shiftOut(SHIFT_DATA, SHIFT_CLOCK, MSBFIRST, data[1]);
@@ -81,6 +93,7 @@ void ShiftLamps::show() {
 }
 
 
+// update the scheduler (to manage flashing intervals & timeouts)
 void ShiftLamps::update() {
 	sch.update();
 }

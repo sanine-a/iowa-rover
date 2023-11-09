@@ -4,6 +4,7 @@
 #include "scheduler.h"
 
 
+// manage a bit from an external pointer
 class ShiftRegisterPin {
 	public:
 	ShiftRegisterPin(byte* root, size_t offset);
@@ -21,6 +22,7 @@ class ShiftRegisterPin {
 struct ShiftLamps;
 
 
+// add lamp-specific functionality over ShiftRegisterPin
 class ShiftLamp : public ShiftRegisterPin {
 	public:
 	ShiftLamp(Scheduler& sch, ShiftLamps* lamps, size_t index);
@@ -36,6 +38,7 @@ class ShiftLamp : public ShiftRegisterPin {
 };
 
 
+// manage all lamps
 struct ShiftLamps {
 	byte data[2];
 	Scheduler sch;

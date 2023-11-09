@@ -8,6 +8,7 @@ TxButton::TxButton(Model& model, ShiftLamp& lamp) :
 	model(model), PolledSwitch(TX_BTN), lamp(lamp), active(false)
 {}
 
+// poll the button
 void TxButton::update() {
 	PolledSwitch::update();
 	active = false;
@@ -22,6 +23,7 @@ void TxButton::update() {
 }
 
 
+// publish press events when pushed
 void TxButton::onLow() {
 	if (!active) { return; }
 	publish(TxButtonEvent::TX_PRESS);
@@ -30,6 +32,7 @@ void TxButton::onLow() {
 void TxButton::onHigh() {}
 
 
+// set up transmitter
 Transmitter::Transmitter(
 	Model& model, Publisher<TxButtonEvent> *pub, Scheduler& sch,
 	ShiftLamp& readyLamp, ShiftLamp& txLamp, ShiftLamp& errLamp, ShiftLamp& runLamp, 
@@ -41,6 +44,8 @@ Transmitter::Transmitter(
 {
 	pinMode(KIOSK_SELECT, INPUT);
 	Serial.println("schedule tx setup");
+	// some code needs to run outside of the constructor; we schedule it to run in 0 ms
+	// so it will run at the next call to sch.update()
 	sch.setTimeout([this]{ 
 		setup(); 
 		if (digitalRead(KIOSK_SELECT)) {
@@ -53,6 +58,7 @@ Transmitter::Transmitter(
 }
 
 
+// helper to print command characters
 char command_char(Model::Command::Action a) {
 	switch(a) {
 	case Model::Command::Action::FORWARD:  return 'F';
@@ -64,11 +70,13 @@ char command_char(Model::Command::Action a) {
 	}
 }
 
+// helper to print command amounts
 int command_amount(float amt) {
 	return round(8.0 * amt);
 }
 
 
+// when tx button is pressed, transmit current command buffer to the rover
 void Transmitter::on(TxButtonEvent e) {
 	if (running) { return; } // do nothing while the rover is already running
 	readyLamp.turnOff();
@@ -92,25 +100,7 @@ void Transmitter::on(TxButtonEvent e) {
 }
 
 
-void Transmitter::sendCommand(int index, Model::Command::Action action, float amount) {
-	txLamp.turnOn();
-	if (!sendMessage("command", index)) { flashError(); return; }
-	delay(150);
-	txLamp.turnOff();
-	delay(150);
-	txLamp.turnOn();
-	if (!sendMessage("action", action)) { flashError(); return; }
-	delay(150);
-	txLamp.turnOff();
-	delay(150);
-	txLamp.turnOn();
-	if (!sendMessage("amount", amount)) { flashError(); return; }
-	delay(150);
-	txLamp.turnOff();
-	delay(150);
-}
-
-
+// process incoming messages from the rover
 void Transmitter::onMessage(const char *key, const char *value) {
 	Serial.print("  RX: {"); Serial.print(key); Serial.print(":"); Serial.print(value); Serial.println("}");
 	if (strcmp(key, "ready") == 0) {

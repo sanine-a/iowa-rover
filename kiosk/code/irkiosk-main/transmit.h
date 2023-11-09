@@ -16,6 +16,7 @@
 
 typedef enum { TX_PRESS } TxButtonEvent;
 
+// polled transmit button
 class TxButton : public PolledSwitch, public Publisher<TxButtonEvent> {
 	public:
 	TxButton(Model& model, ShiftLamp& lamp);
@@ -29,6 +30,7 @@ class TxButton : public PolledSwitch, public Publisher<TxButtonEvent> {
 };
 
 
+// radio communications manager
 class Transmitter : public Subscriber<TxButtonEvent>, public RadioSerial {
 	public:
 	Transmitter(
