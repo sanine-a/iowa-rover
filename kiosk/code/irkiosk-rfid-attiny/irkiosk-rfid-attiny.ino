@@ -23,6 +23,7 @@ ID12LA reader;
 #define ADDR_P3 3
 
 
+// briefly blink the LED
 void flash() {
     digitalWrite(LED_PIN, 1);
     delay(FLASH_TIME);
@@ -30,23 +31,27 @@ void flash() {
 }
 
 
+// process incoming ID12LA data
 void onReadTag(RfidTag& t) {
     memcpy(tag.tagData, t.tagData, 5*sizeof(byte));
     flash();
 }
 
 
+// transmit the last scanned tag over i2c
 void sendTag() {
     Wire.write(tag.tagData, 5);
     Wire.write(tag.checksum());
 }
 
 
+// clear the last stored tag to all 0xff
 void clearTag() {
     memset(tag.tagData, 0xff, 5 * sizeof(byte));
 }
 
 
+// process incoming i2c commands
 void processCommand(int n) {
     if (n < 1)
 	return;
@@ -57,6 +62,7 @@ void processCommand(int n) {
 }
 
 
+// determine the i2c address from the on-board jumpers
 uint8_t read_offset() {
 	pinMode(ADDR_P1, INPUT_PULLUP);
 	pinMode(ADDR_P2, INPUT_PULLUP);

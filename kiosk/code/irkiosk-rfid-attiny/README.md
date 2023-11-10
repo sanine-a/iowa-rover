@@ -7,7 +7,7 @@ This program is intended for ATTiny84 chips monitoring ID-2LA, ID-12LA, or ID-20
 setup
 -----
 
-Tested using the [ATTinyCore] board pack.
+Tested using the [ATTinyCore](https://github.com/SpenceKonde/ATTinyCore) board pack.
 
 Obtain a fresh ATTiny84. Open the sketch in the Arduino IDE, and select the following under the "Tools" menu:
 
@@ -15,7 +15,7 @@ Obtain a fresh ATTiny84. Open the sketch in the Arduino IDE, and select the foll
 * Chip: ATtiny84a
 * Clock Source: 8 MHz (internal)
 * Pin Mapping: clockwise
-* Programmer: USBTinyISP (ATTinyCore) SLOW
+* Programmer: Arduino as ISP (see [`kiosk/code/irkiosk-i2c-reset/README.md`](https://github.com/scimusmn/iowa-rover/blob/master/kiosk/code/irkiosk-i2c-reset/README.md) for how to set this up)
 
 Then click `Tools > Burn Bootloader` (I know, I know, it says "no bootloader", but this is needed to set the clock speed).
 
