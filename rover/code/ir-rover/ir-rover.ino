@@ -17,6 +17,7 @@ int rover_addr, kiosk_addr;
 
 
 // movement constants
+#define RAMP_TIME 300
 #define MOVE_TIME 4000
 #define MOVE_SPEED 1.0
 #define TURN_TIME_MAX 3000
@@ -31,19 +32,33 @@ Motor right_wheel(BIN1, BIN2, PWMB, MOTOR_SPEED);
 
 
 // motor movements
+float lerp(float x0, float x1, float t) {
+  return ((1-t)*x0) + (t*x1);
+}
+void rampTo(float leftSpeed, float rightSpeed, unsigned long ms) {
+  float left0 = left_wheel.getSpeed();
+  float right0 = right_wheel.getSpeed();
+  unsigned long startTime = millis();
+  while (millis() < ms + startTime) {
+    float t = ((float) millis() - startTime) / ms;
+    left_wheel.setSpeed(lerp(left0, leftSpeed, t));
+    right_wheel.setSpeed(lerp(right0, rightSpeed, t));
+    delay(1);
+  }
+  left_wheel.setSpeed(leftSpeed);
+  right_wheel.setSpeed(rightSpeed);
+}
 void drive(int direction, float amount) {
-	left_wheel.setSpeed(direction * MOVE_SPEED);
-	right_wheel.setSpeed(direction * MOVE_SPEED);
-	delay(MOVE_TIME * amount);
+  rampTo(direction * MOVE_SPEED, direction * MOVE_SPEED, RAMP_TIME);
+	delay((MOVE_TIME * amount) - RAMP_TIME);
 }
 double turn_adjust = 0.5;
 void move_forward(float amount) { drive(1, amount); }
 void move_backward(float amount) { drive(-1, amount); }
 
 void turn(int direction, float amount) {
-	left_wheel.setSpeed(direction * TURN_SPEED);
-	right_wheel.setSpeed(direction * -TURN_SPEED);
-	delay(turn_adjust * TURN_TIME_MAX * amount);
+  rampTo(direction * TURN_SPEED, direction * -TURN_SPEED, RAMP_TIME);
+	delay((turn_adjust * TURN_TIME_MAX * amount) - RAMP_TIME);
 }
 void turn_left(float amount) { turn(-1, amount); }
 void turn_right(float amount) { turn(1, amount); }
@@ -151,7 +166,7 @@ class Radio : public RadioSerial {
 	}
 
 
-	protected:
+	// protected:
 	struct command_t commands[4];
 
 	// execute a single command
@@ -199,8 +214,7 @@ class Radio : public RadioSerial {
 			execute_command(commands[i]);
 		}
 		// need to stop at the end
-		left_wheel.setSpeed(0);
-		right_wheel.setSpeed(0);
+		rampTo(0, 0, RAMP_TIME);
 	}
 } radio; // create our global radio object
 
@@ -234,6 +248,9 @@ void setup() {
 	// determine turn adjust from the trimpot
 	long pot = analogRead(TRIMPOT);
 	turn_adjust = ((float)pot)/POT_MAX;
+
+	radio.parse_commands("F1R2L3R4");
+	radio.execute();
 }
 
 

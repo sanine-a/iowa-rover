@@ -5,6 +5,7 @@ class Motor {
 	protected:
 	byte pin_dir1, pin_dir2, pin_pwm;
 	float alpha;
+	float speed;
 
 	public:
 	// constructor
@@ -24,7 +25,7 @@ class Motor {
 	// set the motor speed
 	// speed is scaled by the motor's maximum speed
 	void setSpeed(float speed) {
-		float s = alpha * speed; // scale
+		this->speed = alpha * speed; // scale
 		if (speed == 0) {
 			// stop
 			digitalWrite(pin_dir1, 0);
@@ -34,13 +35,14 @@ class Motor {
 			// run "forward"
 			digitalWrite(pin_dir1, 1);
 			digitalWrite(pin_dir2, 0);
-			analogWrite(pin_pwm, 255.0 * s);
+			analogWrite(pin_pwm, 255.0 * this->speed);
 		} else {
 			// run "backward"
-			s *= -1;
 			digitalWrite(pin_dir1, 0);
 			digitalWrite(pin_dir2, 1);
-			analogWrite(pin_pwm, 255.0 * s);
+			analogWrite(pin_pwm, 255.0 * (-1.0 * this->speed));
 		}
 	}
+
+	float getSpeed() { return speed; }
 };
